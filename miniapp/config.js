@@ -19,7 +19,7 @@ const CONFIG = {
     SWIPE_THRESHOLD: 100,
     ROTATION_FACTOR: 0.1,
     
-    // Default language
+    // Default language (short code, miniapp uses 'en'/'ru' internally)
     DEFAULT_LANGUAGE: 'en',
 };
 

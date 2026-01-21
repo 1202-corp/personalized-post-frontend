@@ -71,15 +71,23 @@ const TRANSLATIONS = {
 let currentLanguage = 'en';
 
 /**
+ * Normalize language code (convert locale format to short code)
+ * @param {string} lang - Language code (supports 'en', 'ru', 'en_US', 'ru_RU')
+ * @returns {string} Short language code ('en' or 'ru')
+ */
+function normalizeLanguage(lang) {
+    if (!lang) return 'en';
+    // Handle locale format (en_US, ru_RU) -> convert to short code
+    const shortCode = lang.toLowerCase().split('_')[0];
+    return TRANSLATIONS[shortCode] ? shortCode : 'en';
+}
+
+/**
  * Initialize i18n with detected or specified language
- * @param {string} lang - Language code ('en' or 'ru')
+ * @param {string} lang - Language code ('en', 'ru', 'en_US', or 'ru_RU')
  */
 function initI18n(lang) {
-    if (TRANSLATIONS[lang]) {
-        currentLanguage = lang;
-    } else {
-        currentLanguage = 'en';
-    }
+    currentLanguage = normalizeLanguage(lang);
     applyTranslations();
 }
 
@@ -135,10 +143,10 @@ function detectLanguage() {
     const tg = window.Telegram?.WebApp;
     if (tg?.initDataUnsafe?.user?.language_code) {
         const tgLang = tg.initDataUnsafe.user.language_code.toLowerCase();
-        // Map language codes (e.g., 'ru-RU' -> 'ru')
-        const shortLang = tgLang.split('-')[0];
-        if (TRANSLATIONS[shortLang]) {
-            return shortLang;
+        // Map language codes (e.g., 'ru-RU' -> 'ru', 'ru_RU' -> 'ru')
+        const normalized = normalizeLanguage(tgLang.replace('-', '_'));
+        if (TRANSLATIONS[normalized]) {
+            return normalized;
         }
     }
     
