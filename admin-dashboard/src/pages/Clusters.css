@@ -1,0 +1,43 @@
+.clusters {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.clusters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clusters-title {
+  margin-bottom: 0;
+}
+
+.clusters-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.clusters-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.cluster-stat-card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.clusters-distribution {
+  padding: 24px;
+}
+
+.distribution-title {
+  margin-bottom: 16px;
+}

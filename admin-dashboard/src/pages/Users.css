@@ -1,0 +1,26 @@
+.users {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.users-title {
+  margin-bottom: 8px;
+}
+
+.users-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.users-table {
+  width: 100%;
+}
+
+.users-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}

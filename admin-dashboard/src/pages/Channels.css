@@ -1,0 +1,26 @@
+.channels {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.channels-title {
+  margin-bottom: 8px;
+}
+
+.channels-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.channels-table {
+  width: 100%;
+}
+
+.channels-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
