@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Card, Text, Loader } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { ABTestResults } from '../types'
+import { useLanguage } from '../context/LanguageContext'
 import './ABTesting.css'
 
 const ABTesting: React.FC = () => {
   const [abTestData, setAbTestData] = useState<ABTestResults | null>(null)
   const [loading, setLoading] = useState(true)
+  const { t } = useLanguage()
 
   useEffect(() => {
     loadABTestData()
@@ -38,7 +40,7 @@ const ABTesting: React.FC = () => {
   return (
     <div className="ab-testing">
       <Text variant="header-1" className="ab-testing-title">
-        A/B Тестирование
+        {t('page.ab_testing.title')}
       </Text>
 
       <Card className="ab-testing-info">

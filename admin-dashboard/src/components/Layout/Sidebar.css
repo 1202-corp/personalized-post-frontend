@@ -2,7 +2,7 @@
   position: fixed;
   /* Position relative to centered content area - sidebar is "attached" to the left edge of centered 50% content */
   /* 25% = left margin, then position sidebar closer to content */
-  left: calc(21% - 240px); /* 21% is left margin for 58% content, 240px = sidebar width */
+  left: calc(21% - 228px); /* move ~12px closer to content */
   top: 80px;
   width: 240px;
   height: calc(100vh - 104px);
@@ -53,7 +53,7 @@
 @media (max-width: 1200px) {
   .sidebar {
     /* For 70% width content, left margin is 15% */
-    left: calc(15% - 240px);
+    left: calc(15% - 228px);
   }
 }
 

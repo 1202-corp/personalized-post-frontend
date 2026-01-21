@@ -18,6 +18,13 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.ab_testing': 'A/B Testing',
     'nav.clusters': 'Кластеры',
 
+    // pages
+    'page.dashboard.title': 'Dashboard',
+    'page.users.title': 'Пользователи',
+    'page.channels.title': 'Каналы',
+    'page.ab_testing.title': 'A/B Тестирование',
+    'page.clusters.title': 'Кластеры',
+
     // login
     'login.title': 'PPP Admin Dashboard',
     'login.subtitle': 'Войдите в систему управления',
@@ -43,6 +50,13 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.channels': 'Channels',
     'nav.ab_testing': 'A/B Testing',
     'nav.clusters': 'Clusters',
+
+    // pages
+    'page.dashboard.title': 'Dashboard',
+    'page.users.title': 'Users',
+    'page.channels.title': 'Channels',
+    'page.ab_testing.title': 'A/B Testing',
+    'page.clusters.title': 'Clusters',
 
     // login
     'login.title': 'PPP Admin Dashboard',

@@ -3,6 +3,7 @@ import { Table, Text, Loader, Pagination, Label, Link } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { Channel } from '../types'
 import type { TableColumnConfig } from '@gravity-ui/uikit'
+import { useLanguage } from '../context/LanguageContext'
 import './Channels.css'
 
 const Channels: React.FC = () => {
@@ -11,6 +12,7 @@ const Channels: React.FC = () => {
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(0)
   const pageSize = 50
+  const { t } = useLanguage()
 
   useEffect(() => {
     loadChannels()
@@ -75,7 +77,7 @@ const Channels: React.FC = () => {
   return (
     <div className="channels">
       <Text variant="header-1" className="channels-title">
-        Каналы
+        {t('page.channels.title')}
       </Text>
 
       <Table data={channels} columns={columns} className="channels-table" />

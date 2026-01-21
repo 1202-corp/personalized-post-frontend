@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Card, Text, Loader } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { DashboardData, ABTestResults } from '../types'
+import { useLanguage } from '../context/LanguageContext'
 import './Dashboard.css'
 
 const Dashboard: React.FC = () => {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
   const [abTestData, setAbTestData] = useState<ABTestResults | null>(null)
   const [loading, setLoading] = useState(true)
+  const { t } = useLanguage()
 
   useEffect(() => {
     loadData()
@@ -45,7 +47,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
       <Text variant="header-1" className="dashboard-title">
-        Dashboard
+        {t('page.dashboard.title')}
       </Text>
 
       {/* Overview Stats */}

@@ -3,12 +3,14 @@ import { Card, Text, Loader, Button, Table } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { ClusterStats } from '../types'
 import type { TableColumnConfig } from '@gravity-ui/uikit'
+import { useLanguage } from '../context/LanguageContext'
 import './Clusters.css'
 
 const Clusters: React.FC = () => {
   const [clusterStats, setClusterStats] = useState<ClusterStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [recalculating, setRecalculating] = useState(false)
+  const { t } = useLanguage()
 
   useEffect(() => {
     loadClusterStats()
@@ -74,7 +76,7 @@ const Clusters: React.FC = () => {
     <div className="clusters">
       <div className="clusters-header">
         <Text variant="header-1" className="clusters-title">
-          Кластеры постов
+          {t('page.clusters.title')}
         </Text>
         <Button
           view="action"
