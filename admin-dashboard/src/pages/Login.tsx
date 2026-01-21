@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, TextInput, Card, Text } from '@gravity-ui/uikit'
 import { useAuth } from '../context/AuthContext'
+import { useLanguage } from '../context/LanguageContext'
 import './Login.css'
 
 const Login: React.FC = () => {
@@ -10,6 +11,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const { login } = useAuth()
+  const { t } = useLanguage()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -21,7 +23,7 @@ const Login: React.FC = () => {
       await login({ username, password })
       navigate('/dashboard')
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Ошибка входа. Проверьте учетные данные.')
+      setError(err.response?.data?.detail || t('login.error_fallback'))
     } finally {
       setLoading(false)
     }
@@ -32,10 +34,10 @@ const Login: React.FC = () => {
       <Card className="login-card" view="raised">
         <div className="login-content">
           <Text variant="header-1" className="login-title">
-            PPB Admin Dashboard
+            {t('login.title')}
           </Text>
           <Text variant="body-1" className="login-subtitle">
-            Войдите в систему управления
+            {t('login.subtitle')}
           </Text>
 
           <form onSubmit={handleSubmit} className="login-form">
@@ -46,8 +48,8 @@ const Login: React.FC = () => {
             )}
 
             <TextInput
-              label="Имя пользователя"
-              placeholder="Введите имя пользователя"
+              label={t('login.username')}
+              placeholder={t('login.username_placeholder')}
               value={username}
               onUpdate={setUsername}
               size="l"
@@ -55,9 +57,9 @@ const Login: React.FC = () => {
             />
 
             <TextInput
-              label="Пароль"
+              label={t('login.password')}
               type="password"
-              placeholder="Введите пароль"
+              placeholder={t('login.password_placeholder')}
               value={password}
               onUpdate={setPassword}
               size="l"
@@ -72,7 +74,7 @@ const Login: React.FC = () => {
               loading={loading}
               disabled={!username || !password}
             >
-              Войти
+              {t('common.login')}
             </Button>
           </form>
         </div>
