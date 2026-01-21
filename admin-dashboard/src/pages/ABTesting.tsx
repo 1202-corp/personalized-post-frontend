@@ -57,7 +57,7 @@ const ABTesting: React.FC = () => {
             className={`ab-testing-variant ${name === 'control' ? 'variant-control' : 'variant-treatment'}`}
           >
             <div className="ab-testing-variant-header">
-              <Text variant="header-3">{name}</Text>
+              <Text variant="header-2">{name}</Text>
               <Text variant="caption-1" color="secondary">
                 {variant.algorithm}
               </Text>
@@ -67,7 +67,7 @@ const ABTesting: React.FC = () => {
                 <Text variant="caption-1" color="secondary">
                   Юзеры:
                 </Text>
-                <Text variant="body-1" weight="medium">
+                <Text variant="body-1" style={{ fontWeight: 500 }}>
                   {variant.users}
                 </Text>
               </div>
@@ -75,7 +75,7 @@ const ABTesting: React.FC = () => {
                 <Text variant="caption-1" color="secondary">
                   Обучено:
                 </Text>
-                <Text variant="body-1" weight="medium">
+                <Text variant="body-1" style={{ fontWeight: 500 }}>
                   {variant.trained}
                 </Text>
               </div>
@@ -83,7 +83,7 @@ const ABTesting: React.FC = () => {
                 <Text variant="caption-1" color="secondary">
                   Post-training:
                 </Text>
-                <Text variant="body-1" weight="medium">
+                <Text variant="body-1" style={{ fontWeight: 500 }}>
                   {variant.post_training_interactions || 0}
                 </Text>
               </div>
@@ -93,7 +93,7 @@ const ABTesting: React.FC = () => {
                 </Text>
                 <Text
                   variant="body-1"
-                  weight="bold"
+                  style={{ fontWeight: 700 }}
                   color={
                     variant.like_rate && variant.like_rate >= 50
                       ? 'positive'

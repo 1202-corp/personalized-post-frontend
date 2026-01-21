@@ -175,7 +175,7 @@ const Dashboard: React.FC = () => {
                 className={`ab-test-variant ${name === 'control' ? 'variant-control' : 'variant-treatment'}`}
               >
                 <div className="ab-test-variant-header">
-                  <Text variant="body-1" weight="medium">
+                  <Text variant="body-1" style={{ fontWeight: 500 }}>
                     {name}
                   </Text>
                   <Text variant="caption-1" color="secondary">
@@ -187,7 +187,7 @@ const Dashboard: React.FC = () => {
                     <Text variant="caption-1" color="secondary">
                       Юзеры:
                     </Text>
-                    <Text variant="body-2" weight="medium">
+                    <Text variant="body-2" style={{ fontWeight: 500 }}>
                       {variant.users}
                     </Text>
                   </div>
@@ -195,7 +195,7 @@ const Dashboard: React.FC = () => {
                     <Text variant="caption-1" color="secondary">
                       Обучено:
                     </Text>
-                    <Text variant="body-2" weight="medium">
+                    <Text variant="body-2" style={{ fontWeight: 500 }}>
                       {variant.trained}
                     </Text>
                   </div>
@@ -203,7 +203,7 @@ const Dashboard: React.FC = () => {
                     <Text variant="caption-1" color="secondary">
                       Post-training:
                     </Text>
-                    <Text variant="body-2" weight="medium">
+                    <Text variant="body-2" style={{ fontWeight: 500 }}>
                       {variant.post_training_interactions || 0}
                     </Text>
                   </div>
@@ -213,7 +213,7 @@ const Dashboard: React.FC = () => {
                     </Text>
                     <Text
                       variant="body-2"
-                      weight="bold"
+                      style={{ fontWeight: 700 }}
                       color={
                         variant.like_rate && variant.like_rate >= 50
                           ? 'positive'

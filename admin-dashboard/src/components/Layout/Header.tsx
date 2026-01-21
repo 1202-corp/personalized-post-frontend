@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Text } from '@gravity-ui/uikit'
-import { SignOut } from '@gravity-ui/icons'
+import { ArrowRightToSquare } from '@gravity-ui/icons'
 import './Header.css'
 
 interface HeaderProps {
@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
         view="outlined"
         size="m"
         onClick={onLogout}
-        iconStart={SignOut}
+        iconStart={ArrowRightToSquare}
       >
         Выйти
       </Button>

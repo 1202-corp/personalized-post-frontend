@@ -52,7 +52,6 @@ const Login: React.FC = () => {
               onUpdate={setUsername}
               size="l"
               disabled={loading}
-              required
             />
 
             <TextInput
@@ -63,7 +62,6 @@ const Login: React.FC = () => {
               onUpdate={setPassword}
               size="l"
               disabled={loading}
-              required
             />
 
             <Button

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Text, Loader, Pagination, Badge, Link } from '@gravity-ui/uikit'
+import { Table, Text, Loader, Pagination, Label, Link } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { Channel } from '../types'
 import type { TableColumnConfig } from '@gravity-ui/uikit'
@@ -56,9 +56,9 @@ const Channels: React.FC = () => {
       id: 'is_default',
       name: 'По умолчанию',
       template: (item) => (
-        <Badge
-          theme={item.is_default ? 'success' : 'default'}
-          text={item.is_default ? 'Да' : 'Нет'}
+        <Label
+          theme={item.is_default ? 'success' : 'normal'}
+          value={item.is_default ? 'Да' : 'Нет'}
         />
       ),
     },

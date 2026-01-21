@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { Text, Icon } from '@gravity-ui/uikit'
 import { 
   ChartLine, 
-  Users, 
+  LayoutList, 
   Video, 
-  TestTube, 
-  FolderNetwork 
+  Flask,
+  FolderTree
 } from '@gravity-ui/icons'
 import './Sidebar.css'
 
@@ -17,15 +17,15 @@ interface SidebarProps {
 interface MenuItem {
   path: string
   label: string
-  icon: React.ComponentType
+  iconData: any
 }
 
 const menuItems: MenuItem[] = [
-  { path: '/dashboard', label: 'Dashboard', icon: ChartLine },
-  { path: '/users', label: 'Пользователи', icon: Users },
-  { path: '/channels', label: 'Каналы', icon: Video },
-  { path: '/ab-testing', label: 'A/B Testing', icon: TestTube },
-  { path: '/clusters', label: 'Кластеры', icon: FolderNetwork },
+  { path: '/dashboard', label: 'Dashboard', iconData: ChartLine },
+  { path: '/users', label: 'Пользователи', iconData: LayoutList },
+  { path: '/channels', label: 'Каналы', iconData: Video },
+  { path: '/ab-testing', label: 'A/B Testing', iconData: Flask },
+  { path: '/clusters', label: 'Кластеры', iconData: FolderTree },
 ]
 
 const Sidebar: React.FC<SidebarProps> = ({ currentPath }) => {
@@ -38,7 +38,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPath }) => {
       </div>
       <nav className="sidebar-nav">
         {menuItems.map((item) => {
-          const IconComponent = item.icon
           const isActive = currentPath === item.path
 
           return (
@@ -47,7 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPath }) => {
               className={`sidebar-item ${isActive ? 'active' : ''}`}
               onClick={() => navigate(item.path)}
             >
-              <Icon data={IconComponent} size={20} />
+              <Icon data={item.iconData} size={20} />
               <Text variant="body-2">{item.label}</Text>
             </button>
           )

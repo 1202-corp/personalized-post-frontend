@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Text, Loader, Pagination, Badge } from '@gravity-ui/uikit'
+import { Table, Text, Loader, Pagination, Label } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { User } from '../types'
 import type { TableColumnConfig } from '@gravity-ui/uikit'
@@ -49,9 +49,9 @@ const Users: React.FC = () => {
       id: 'is_trained',
       name: 'Статус',
       template: (item) => (
-        <Badge
+        <Label
           theme={item.is_trained ? 'success' : 'warning'}
-          text={item.is_trained ? '✓ Обучен' : '⏳ В процессе'}
+          value={item.is_trained ? '✓ Обучен' : '⏳ В процессе'}
         />
       ),
     },
