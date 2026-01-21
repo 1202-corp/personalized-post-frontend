@@ -13,7 +13,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.0",
     "@gravity-ui/uikit": "^7.29.0",
-    "@gravity-ui/navigation": "^4.23.0",
+    "@gravity-ui/navigation": "^4.0.8",
     "@gravity-ui/icons": "^2.16.0",
     "axios": "^1.7.7"
   },
