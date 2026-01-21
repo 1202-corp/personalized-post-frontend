@@ -203,10 +203,6 @@
                     <div class="font-medium text-blue-700">📘 API Docs</div>
                     <div class="text-xs text-gray-500">Swagger UI</div>
                 </a>
-                <a href="http://localhost:5050" target="_blank" class="p-3 bg-green-50 rounded-lg hover:bg-green-100 transition">
-                    <div class="font-medium text-green-700">🗄️ pgAdmin</div>
-                    <div class="text-xs text-gray-500">База данных</div>
-                </a>
                 <a href="http://localhost:6333/dashboard" target="_blank" class="p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition">
                     <div class="font-medium text-purple-700">🔮 Qdrant</div>
                     <div class="text-xs text-gray-500">Векторная БД</div>
@@ -286,7 +282,6 @@
                 
                 // Frontend
                 html += renderService('MiniApp', s.miniapp?.status === 'healthy', ':8080', s.miniapp?.error);
-                html += renderService('pgAdmin', s.pgadmin?.status === 'healthy', ':5050', s.pgadmin?.error);
                 
             } catch (e) {
                 html += '<div class="col-span-full text-center text-red-500">Ошибка загрузки статусов</div>';
