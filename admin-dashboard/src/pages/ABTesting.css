@@ -21,12 +21,12 @@
 
 .ab-testing-variants {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
 }
 
 .ab-testing-variant {
-  padding: 24px;
+  padding: 16px;
 }
 
 .variant-control {
@@ -43,7 +43,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .ab-testing-variant-stats {

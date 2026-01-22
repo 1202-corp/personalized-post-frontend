@@ -34,7 +34,7 @@ const ABTesting: React.FC = () => {
   }
 
   if (!abTestData) {
-    return <Text>Ошибка загрузки данных</Text>
+    return <Text>{t('common.error_loading')}</Text>
   }
 
   return (
@@ -45,10 +45,7 @@ const ABTesting: React.FC = () => {
 
       <Card className="ab-testing-info">
         <Text variant="body-2" color="secondary">
-          Сравнение эффективности разных алгоритмов рекомендаций. Юзеры автоматически
-          распределяются по вариантам (50/50 по хешу user_id). control = cosine similarity,
-          treatment_a = hybrid (cosine + recency). Like rate показывает какой алгоритм лучше
-          предсказывает предпочтения.
+          {t('ab_testing.info')}
         </Text>
       </Card>
 
@@ -59,7 +56,9 @@ const ABTesting: React.FC = () => {
             className={`ab-testing-variant ${name === 'control' ? 'variant-control' : 'variant-treatment'}`}
           >
             <div className="ab-testing-variant-header">
-              <Text variant="header-2">{name}</Text>
+              <Text variant="header-2">
+                {name === 'control' ? t('ab_testing.control') : t('ab_testing.treatment')}
+              </Text>
               <Text variant="caption-1" color="secondary">
                 {variant.algorithm}
               </Text>
@@ -67,7 +66,7 @@ const ABTesting: React.FC = () => {
             <div className="ab-testing-variant-stats">
               <div className="ab-testing-stat">
                 <Text variant="caption-1" color="secondary">
-                  Юзеры:
+                  {t('ab_testing.users')}
                 </Text>
                 <Text variant="body-1" style={{ fontWeight: 500 }}>
                   {variant.users}
@@ -75,7 +74,7 @@ const ABTesting: React.FC = () => {
               </div>
               <div className="ab-testing-stat">
                 <Text variant="caption-1" color="secondary">
-                  Обучено:
+                  {t('ab_testing.trained')}
                 </Text>
                 <Text variant="body-1" style={{ fontWeight: 500 }}>
                   {variant.trained}
@@ -83,7 +82,7 @@ const ABTesting: React.FC = () => {
               </div>
               <div className="ab-testing-stat">
                 <Text variant="caption-1" color="secondary">
-                  Post-training:
+                  {t('ab_testing.post_training')}
                 </Text>
                 <Text variant="body-1" style={{ fontWeight: 500 }}>
                   {variant.post_training_interactions || 0}
@@ -91,7 +90,7 @@ const ABTesting: React.FC = () => {
               </div>
               <div className="ab-testing-stat">
                 <Text variant="caption-1" color="secondary">
-                  Like rate:
+                  {t('ab_testing.like_rate')}
                 </Text>
                 <Text
                   variant="body-1"
@@ -106,13 +105,15 @@ const ABTesting: React.FC = () => {
                 >
                   {variant.post_training_interactions > 0
                     ? `${variant.like_rate}%`
-                    : 'N/A'}
+                    : t('common.not_available')}
                 </Text>
               </div>
             </div>
             {variant.note && (
               <Text variant="caption-1" color="secondary" className="ab-testing-note">
-                {variant.note}
+                {variant.note === 'No trained users for comparison' 
+                  ? t('ab_testing.no_trained_users')
+                  : variant.note}
               </Text>
             )}
           </Card>

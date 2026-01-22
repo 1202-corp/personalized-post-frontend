@@ -1,12 +1,12 @@
 .sidebar {
   position: fixed;
-  /* Position relative to centered content area - sidebar is "attached" to the left edge of centered 50% content */
-  /* 25% = left margin, then position sidebar closer to content */
-  left: calc(21% - 228px); /* move ~12px closer to content */
-  top: 80px;
+  /* Position relative to centered content area - sidebar is "attached" to the left edge of centered 58% content */
+  /* Content starts at 21% from left, sidebar positioned to the left of content with spacing */
+  left: calc(21% - 240px - 6px); /* left edge of content minus sidebar width minus spacing (reduced to 6px) */
+  top: 100px;
   width: 240px;
-  height: calc(100vh - 104px);
-  max-height: calc(100vh - 104px);
+  height: calc(100vh - 124px);
+  max-height: calc(100vh - 124px);
   background: transparent;
   display: flex;
   flex-direction: column;
@@ -20,7 +20,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: max-content; /* makes buttons equal to the widest one */
+  width: max-content; /* makes all buttons equal to the widest one */
+  align-items: flex-end; /* buttons align to right edge, expand to the left */
+  margin-left: auto; /* push container to right edge, so it expands to the left */
 }
 
 .sidebar-item {
@@ -34,7 +36,8 @@
   cursor: pointer;
   transition: background-color 0.2s;
   text-align: left;
-  width: 100%;
+  width: 100%; /* all buttons have same width (equal to widest button) */
+  box-sizing: border-box;
 }
 
 .sidebar-item:hover {
@@ -52,8 +55,8 @@
 
 @media (max-width: 1200px) {
   .sidebar {
-    /* For 70% width content, left margin is 15% */
-    left: calc(15% - 228px);
+    /* For 75% width content, left margin is 12.5% */
+    left: calc(12.5% - 240px - 6px);
   }
 }
 

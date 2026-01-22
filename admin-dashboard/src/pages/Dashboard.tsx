@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Text, Loader } from '@gravity-ui/uikit'
 import { api } from '../services/api'
-import { DashboardData, ABTestResults } from '../types'
+import { DashboardData } from '../types'
 import { useLanguage } from '../context/LanguageContext'
 import './Dashboard.css'
 
 const Dashboard: React.FC = () => {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
-  const [abTestData, setAbTestData] = useState<ABTestResults | null>(null)
   const [loading, setLoading] = useState(true)
   const { t } = useLanguage()
 
@@ -17,12 +16,8 @@ const Dashboard: React.FC = () => {
 
   const loadData = async () => {
     try {
-      const [dashboardRes, abTestRes] = await Promise.all([
-        api.get<DashboardData>('/analytics/dashboard'),
-        api.get<ABTestResults>('/ab-testing/results'),
-      ])
+      const dashboardRes = await api.get<DashboardData>('/analytics/dashboard')
       setDashboardData(dashboardRes.data)
-      setAbTestData(abTestRes.data)
     } catch (error) {
       console.error('Error loading dashboard data:', error)
     } finally {
@@ -39,7 +34,7 @@ const Dashboard: React.FC = () => {
   }
 
   if (!dashboardData) {
-    return <Text>Ошибка загрузки данных</Text>
+    return <Text>{t('common.error_loading')}</Text>
   }
 
   const { overview, recommendations } = dashboardData
@@ -54,44 +49,44 @@ const Dashboard: React.FC = () => {
       <div className="dashboard-stats">
         <Card className="stat-card">
           <Text variant="body-1" color="secondary">
-            Пользователей
+            {t('dashboard.users')}
           </Text>
           <Text variant="header-1">{overview.users.total}</Text>
           <Text variant="caption-2" color="positive">
-            {overview.users.trained} обучено ({overview.users.training_rate}%)
+            {overview.users.trained} {t('common.trained')} ({overview.users.training_rate}%)
           </Text>
         </Card>
 
         <Card className="stat-card">
           <Text variant="body-1" color="secondary">
-            Каналов
+            {t('dashboard.channels')}
           </Text>
           <Text variant="header-1">{overview.channels.total}</Text>
         </Card>
 
         <Card className="stat-card">
           <Text variant="body-1" color="secondary">
-            Постов
+            {t('dashboard.posts')}
           </Text>
           <Text variant="header-1">{overview.posts.total}</Text>
           <Text variant="caption-2" color="secondary">
-            {recommendations.posts_with_scores} с ML-скорингом
+            {recommendations.posts_with_scores} {t('dashboard.with_ml_scoring')}
           </Text>
         </Card>
 
         <Card className="stat-card">
           <Text variant="body-1" color="secondary">
-            Оценок
+            {t('dashboard.interactions')}
           </Text>
           <Text variant="header-1">{overview.interactions.total}</Text>
           <Text variant="caption-2" color="positive">
-            {overview.interactions.like_rate}% like rate
+            {overview.interactions.like_rate}% {t('dashboard.like_rate')}
           </Text>
         </Card>
 
         <Card className="stat-card">
           <Text variant="body-1" color="secondary">
-            Лайков
+            {t('dashboard.likes')}
           </Text>
           <Text variant="header-1" color="positive">
             {overview.interactions.likes}
@@ -100,7 +95,7 @@ const Dashboard: React.FC = () => {
 
         <Card className="stat-card">
           <Text variant="body-1" color="secondary">
-            Дизлайков
+            {t('dashboard.dislikes')}
           </Text>
           <Text variant="header-1" color="danger">
             {overview.interactions.dislikes}
@@ -115,10 +110,10 @@ const Dashboard: React.FC = () => {
             {recommendations.avg_liked_score.toFixed(4)}
           </Text>
           <Text variant="body-2" color="secondary">
-            Avg Score (liked)
+            {t('dashboard.avg_score_liked')}
           </Text>
           <Text variant="caption-1" color="secondary">
-            Средний скор лайкнутых
+            {t('dashboard.avg_score_liked_desc')}
           </Text>
         </Card>
 
@@ -127,10 +122,10 @@ const Dashboard: React.FC = () => {
             {recommendations.avg_disliked_score.toFixed(4)}
           </Text>
           <Text variant="body-2" color="secondary">
-            Avg Score (disliked)
+            {t('dashboard.avg_score_disliked')}
           </Text>
           <Text variant="caption-1" color="secondary">
-            Средний скор дизлайкнутых
+            {t('dashboard.avg_score_disliked_desc')}
           </Text>
         </Card>
 
@@ -139,10 +134,10 @@ const Dashboard: React.FC = () => {
             {recommendations.score_difference.toFixed(4)}
           </Text>
           <Text variant="body-2" color="secondary">
-            Score Difference
+            {t('dashboard.score_difference')}
           </Text>
           <Text variant="caption-1" color="secondary">
-            Разница (чем больше - лучше)
+            {t('dashboard.score_difference_desc')}
           </Text>
         </Card>
 
@@ -151,95 +146,13 @@ const Dashboard: React.FC = () => {
             {recommendations.scoring_coverage}%
           </Text>
           <Text variant="body-2" color="secondary">
-            ML Coverage
+            {t('dashboard.ml_coverage')}
           </Text>
           <Text variant="caption-1" color="secondary">
-            % постов с скорингом
+            {t('dashboard.ml_coverage_desc')}
           </Text>
         </Card>
       </div>
-
-      {/* A/B Testing */}
-      {abTestData && (
-        <Card className="ab-test-section">
-          <Text variant="header-2" className="section-title">
-            A/B Тестирование алгоритмов
-          </Text>
-          <Text variant="body-2" color="secondary" className="section-subtitle">
-            Сравнение эффективности разных алгоритмов рекомендаций. Юзеры автоматически
-            распределяются по вариантам.
-          </Text>
-
-          <div className="ab-test-variants">
-            {Object.entries(abTestData.variants).map(([name, variant]) => (
-              <Card
-                key={name}
-                className={`ab-test-variant ${name === 'control' ? 'variant-control' : 'variant-treatment'}`}
-              >
-                <div className="ab-test-variant-header">
-                  <Text variant="body-1" style={{ fontWeight: 500 }}>
-                    {name}
-                  </Text>
-                  <Text variant="caption-1" color="secondary">
-                    {variant.algorithm}
-                  </Text>
-                </div>
-                <div className="ab-test-variant-stats">
-                  <div>
-                    <Text variant="caption-1" color="secondary">
-                      Юзеры:
-                    </Text>
-                    <Text variant="body-2" style={{ fontWeight: 500 }}>
-                      {variant.users}
-                    </Text>
-                  </div>
-                  <div>
-                    <Text variant="caption-1" color="secondary">
-                      Обучено:
-                    </Text>
-                    <Text variant="body-2" style={{ fontWeight: 500 }}>
-                      {variant.trained}
-                    </Text>
-                  </div>
-                  <div>
-                    <Text variant="caption-1" color="secondary">
-                      Post-training:
-                    </Text>
-                    <Text variant="body-2" style={{ fontWeight: 500 }}>
-                      {variant.post_training_interactions || 0}
-                    </Text>
-                  </div>
-                  <div>
-                    <Text variant="caption-1" color="secondary">
-                      Like rate:
-                    </Text>
-                    <Text
-                      variant="body-2"
-                      style={{ fontWeight: 700 }}
-                      color={
-                        variant.like_rate && variant.like_rate >= 50
-                          ? 'positive'
-                          : variant.post_training_interactions > 0
-                          ? 'danger'
-                          : 'secondary'
-                      }
-                    >
-                      {variant.post_training_interactions > 0
-                        ? `${variant.like_rate}%`
-                        : 'N/A'}
-                    </Text>
-                  </div>
-                </div>
-                {variant.note && (
-                  <Text variant="caption-1" color="secondary" className="ab-test-note">
-                    {variant.note}
-                  </Text>
-                )}
-              </Card>
-            ))}
-          </div>
-        </Card>
-      )}
     </div>
   )
 }
