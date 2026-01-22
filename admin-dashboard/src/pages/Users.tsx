@@ -37,39 +37,39 @@ const Users: React.FC = () => {
   const columns: TableColumnConfig<User>[] = [
     {
       id: 'telegram_id',
-      name: 'Telegram ID',
+      name: t('users.telegram_id'),
       template: (item) => <Text variant="code-inline-1">{item.telegram_id}</Text>,
     },
     {
       id: 'username',
-      name: 'Username',
+      name: t('users.username'),
       template: (item) => (
         <Text>{item.username ? `@${item.username}` : '-'}</Text>
       ),
     },
     {
       id: 'is_trained',
-      name: 'Статус',
+      name: t('users.status'),
       template: (item) => (
         <Label
           theme={item.is_trained ? 'success' : 'warning'}
-          value={item.is_trained ? '✓ Обучен' : '⏳ В процессе'}
+          value={item.is_trained ? t('users.trained') : t('users.in_progress')}
         />
       ),
     },
     {
       id: 'language',
-      name: 'Язык',
+      name: t('users.language'),
       template: (item) => <Text>{item.language}</Text>,
     },
     {
       id: 'bonus_channels_count',
-      name: 'Бонус каналов',
+      name: t('users.bonus_channels'),
       template: (item) => <Text>{item.bonus_channels_count}</Text>,
     },
     {
       id: 'last_activity_at',
-      name: 'Последняя активность',
+      name: t('users.last_activity'),
       template: (item) => (
         <Text>
           {item.last_activity_at

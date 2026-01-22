@@ -37,7 +37,7 @@ const Channels: React.FC = () => {
   const columns: TableColumnConfig<Channel>[] = [
     {
       id: 'username',
-      name: 'Канал',
+      name: t('channels.channel'),
       template: (item) => (
         <div>
           <Link href={`https://t.me/${item.username}`} target="_blank">
@@ -51,16 +51,16 @@ const Channels: React.FC = () => {
     },
     {
       id: 'posts_count',
-      name: 'Постов',
+      name: t('channels.posts'),
       template: (item) => <Text>{item.posts_count}</Text>,
     },
     {
       id: 'is_default',
-      name: 'По умолчанию',
+      name: t('channels.default'),
       template: (item) => (
         <Label
           theme={item.is_default ? 'success' : 'normal'}
-          value={item.is_default ? 'Да' : 'Нет'}
+          value={item.is_default ? t('channels.default_yes') : t('channels.default_no')}
         />
       ),
     },

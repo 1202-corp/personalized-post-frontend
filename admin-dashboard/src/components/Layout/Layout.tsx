@@ -23,7 +23,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="layout">
       <Sidebar currentPath={location.pathname} />
       <div className="layout-main">
-        <Header onLogout={handleLogout} />
+        <div className="header-container">
+          <Header onLogout={handleLogout} />
+        </div>
         <div className="layout-content">
           {children}
         </div>

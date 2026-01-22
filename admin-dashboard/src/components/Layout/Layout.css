@@ -2,35 +2,43 @@
   display: flex;
   min-height: 100vh;
   background: var(--g-color-base-background);
+  position: relative;
 }
 
 .layout-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 240px;
+  width: 100%;
 }
 
 .layout-content {
   flex: 1;
   padding: 24px;
-  width: 50%;
+  width: 58%;
+  max-width: 58%;
+  margin: 0 auto;
+}
+
+.header-container {
+  width: 58%;
+  max-width: 58%;
   margin: 0 auto;
 }
 
 @media (max-width: 1200px) {
-  .layout-content {
-    width: 70%;
+  .layout-content,
+  .header-container {
+    width: 75%;
+    max-width: 75%;
   }
 }
 
 @media (max-width: 768px) {
-  .layout-main {
-    margin-left: 0;
-  }
-
-  .layout-content {
+  .layout-content,
+  .header-container {
     width: 100%;
+    max-width: 100%;
     padding: 16px;
   }
 }

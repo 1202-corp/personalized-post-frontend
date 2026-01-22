@@ -49,7 +49,7 @@ const Clusters: React.FC = () => {
   }
 
   if (!clusterStats) {
-    return <Text>Ошибка загрузки данных</Text>
+    return <Text>{t('common.error_loading')}</Text>
   }
 
   const distributionData = Object.entries(clusterStats.cluster_distribution || {}).map(
@@ -62,12 +62,12 @@ const Clusters: React.FC = () => {
   const columns: TableColumnConfig<typeof distributionData[0]>[] = [
     {
       id: 'cluster_id',
-      name: 'Cluster ID',
+      name: t('clusters.cluster_id'),
       template: (item) => <Text>{item.cluster_id}</Text>,
     },
     {
       id: 'post_count',
-      name: 'Количество постов',
+      name: t('clusters.post_count'),
       template: (item) => <Text>{item.post_count}</Text>,
     },
   ]
@@ -84,36 +84,36 @@ const Clusters: React.FC = () => {
           onClick={handleRecalculate}
           loading={recalculating}
         >
-          Пересчитать кластеры
+          {t('clusters.recalculate')}
         </Button>
       </div>
 
       <div className="clusters-stats">
         <Card className="cluster-stat-card">
           <Text variant="body-1" color="secondary">
-            Всего кластеров
+            {t('clusters.total')}
           </Text>
           <Text variant="header-1">{clusterStats.total_clusters}</Text>
         </Card>
 
         <Card className="cluster-stat-card">
           <Text variant="body-1" color="secondary">
-            Всего постов
+            {t('clusters.posts_in_clusters')}
           </Text>
-          <Text variant="header-1">{clusterStats.total_posts}</Text>
+          <Text variant="header-1">{clusterStats.posts_with_clusters}</Text>
         </Card>
 
         <Card className="cluster-stat-card">
           <Text variant="body-1" color="secondary">
-            Постов с кластерами
+            {t('clusters.unclustered_posts')}
           </Text>
-          <Text variant="header-1">{clusterStats.posts_with_clusters}</Text>
+          <Text variant="header-1">{clusterStats.total_posts - clusterStats.posts_with_clusters}</Text>
         </Card>
       </div>
 
       <Card className="clusters-distribution">
         <Text variant="header-2" className="distribution-title">
-          Распределение по кластерам
+          {t('clusters.distribution_title')}
         </Text>
         <Table data={distributionData} columns={columns} />
       </Card>
