@@ -308,6 +308,71 @@ body {
     word-wrap: break-word;
 }
 
+/* HTML formatting styles for post text */
+.card-text b, .card-text strong {
+    font-weight: 600;
+}
+
+.card-text i, .card-text em {
+    font-style: italic;
+}
+
+.card-text u {
+    text-decoration: underline;
+}
+
+.card-text s, .card-text strike {
+    text-decoration: line-through;
+}
+
+.card-text code {
+    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+    background-color: var(--tg-theme-secondary-bg-color);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.card-text pre {
+    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+    background-color: var(--tg-theme-secondary-bg-color);
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.9em;
+    margin: 8px 0;
+}
+
+.card-text blockquote {
+    border-left: 3px solid var(--tg-theme-link-color);
+    padding-left: 12px;
+    margin: 8px 0;
+    color: var(--tg-theme-hint-color);
+}
+
+.card-text a {
+    color: var(--tg-theme-link-color);
+    text-decoration: none;
+}
+
+.card-text a:hover {
+    text-decoration: underline;
+}
+
+.card-text tg-spoiler {
+    background-color: var(--tg-theme-hint-color);
+    color: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.card-text tg-spoiler:hover,
+.card-text tg-spoiler.revealed {
+    background-color: transparent;
+    color: inherit;
+}
+
 /* Card Actions */
 .card-actions {
     display: flex;
