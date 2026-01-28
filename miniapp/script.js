@@ -383,7 +383,8 @@ function createCard(post) {
     }
 
     const mediaContent = window.i18n?.t('mediaContent') || '[Media content]';
-    card.querySelector('.card-text').textContent = post.text || mediaContent;
+    // Text comes in HTML format from user-bot, use innerHTML to preserve formatting
+    card.querySelector('.card-text').innerHTML = post.text || mediaContent;
     
     // Setup action buttons
     const buttons = card.querySelectorAll('.btn-action');
