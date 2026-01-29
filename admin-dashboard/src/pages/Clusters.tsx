@@ -1,40 +1,40 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Text, Loader, Button, Table } from '@gravity-ui/uikit'
 import { api } from '../services/api'
-import { ClusterStats } from '../types'
+import { TasteClusterStats } from '../types'
 import type { TableColumnConfig } from '@gravity-ui/uikit'
 import { useLanguage } from '../context/LanguageContext'
 import { useDataLoader } from '../hooks/useDataLoader'
 import './Clusters.css'
 
 const Clusters: React.FC = () => {
-  const { data: clusterStats, loading, load: loadClusterStats } = useDataLoader<ClusterStats>()
+  const { data: stats, loading, load: loadStats } = useDataLoader<TasteClusterStats>()
   const [recalculating, setRecalculating] = useState(false)
   const { t } = useLanguage()
 
   useEffect(() => {
-    loadClusterStats(async () => {
-      const response = await api.get<ClusterStats>('/admin/clusters/stats')
+    loadStats(async () => {
+      const response = await api.get<TasteClusterStats>('/admin/clusters/stats')
       return response.data
     })
-  }, [loadClusterStats])
+  }, [loadStats])
 
   const handleRecalculate = async () => {
     try {
       setRecalculating(true)
-      await api.post('/admin/clusters/recalculate', { n_clusters: 50 })
-      await loadClusterStats(async () => {
-        const response = await api.get<ClusterStats>('/admin/clusters/stats')
+      await api.post('/admin/clusters/recalculate')
+      await loadStats(async () => {
+        const response = await api.get<TasteClusterStats>('/admin/clusters/stats')
         return response.data
       })
     } catch (error) {
-      console.error('Error recalculating clusters:', error)
+      console.error('Error recalculating taste clusters:', error)
     } finally {
       setRecalculating(false)
     }
   }
 
-  if (loading && !clusterStats) {
+  if (loading && !stats) {
     return (
       <div className="clusters-loading">
         <Loader size="l" />
@@ -42,11 +42,11 @@ const Clusters: React.FC = () => {
     )
   }
 
-  if (!clusterStats) {
+  if (!stats) {
     return <Text>{t('common.error_loading')}</Text>
   }
 
-  const distributionData = clusterStats.cluster_distribution || []
+  const distributionData = stats.cluster_distribution || []
 
   const columns: TableColumnConfig<typeof distributionData[0]>[] = [
     {
@@ -55,9 +55,9 @@ const Clusters: React.FC = () => {
       template: (item) => <Text>{item.cluster_id}</Text>,
     },
     {
-      id: 'post_count',
-      name: t('clusters.post_count'),
-      template: (item) => <Text>{item.post_count}</Text>,
+      id: 'user_count',
+      name: t('clusters.user_count'),
+      template: (item) => <Text>{item.user_count}</Text>,
     },
   ]
 
@@ -80,23 +80,44 @@ const Clusters: React.FC = () => {
       <div className="clusters-stats">
         <Card className="cluster-stat-card">
           <Text variant="body-1" color="secondary">
-            {t('clusters.total')}
+            {t('clusters.num_clusters')}
           </Text>
-          <Text variant="header-1">{clusterStats.total_clusters}</Text>
+          <Text variant="header-1">{stats.num_clusters}</Text>
         </Card>
 
         <Card className="cluster-stat-card">
           <Text variant="body-1" color="secondary">
-            {t('clusters.posts_in_clusters')}
+            {t('clusters.total_users')}
           </Text>
-          <Text variant="header-1">{clusterStats.posts_with_clusters}</Text>
+          <Text variant="header-1">{stats.total_users}</Text>
         </Card>
 
         <Card className="cluster-stat-card">
           <Text variant="body-1" color="secondary">
-            {t('clusters.unclustered_posts')}
+            {t('clusters.users_in_clusters')}
           </Text>
-          <Text variant="header-1">{clusterStats.total_posts - clusterStats.posts_with_clusters}</Text>
+          <Text variant="header-1">{stats.users_with_taste_cluster}</Text>
+        </Card>
+
+        <Card className="cluster-stat-card">
+          <Text variant="body-1" color="secondary">
+            {t('clusters.users_without_cluster')}
+          </Text>
+          <Text variant="header-1">{stats.users_without_taste_cluster}</Text>
+        </Card>
+
+        <Card className="cluster-stat-card">
+          <Text variant="body-1" color="secondary">
+            {t('clusters.avg_users_per_cluster')}
+          </Text>
+          <Text variant="header-1">{stats.avg_users_per_cluster}</Text>
+        </Card>
+
+        <Card className="cluster-stat-card">
+          <Text variant="body-1" color="secondary">
+            {t('clusters.max_users_in_cluster')}
+          </Text>
+          <Text variant="header-1">{stats.max_users_in_cluster}</Text>
         </Card>
       </div>
 

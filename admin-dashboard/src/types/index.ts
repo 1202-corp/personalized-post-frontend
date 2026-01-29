@@ -33,8 +33,6 @@ export interface User {
   bonus_channels_count: number
   created_at: string | null
   last_activity_at: string | null
-  // Backward compatibility: computed property
-  is_trained?: boolean
 }
 
 export interface Channel {
@@ -120,16 +118,15 @@ export interface ABTestResults {
   variants: Record<string, ABTestVariant>
 }
 
-export interface ClusterDistributionItem {
-  cluster_id: number
-  post_count: number
-}
-
-export interface ClusterStats {
-  total_clusters: number
-  total_posts: number
-  posts_with_clusters: number
-  cluster_distribution: ClusterDistributionItem[]
+/** Taste clusters: users grouped by preference vector for post-centric delivery */
+export interface TasteClusterStats {
+  num_clusters: number
+  total_users: number
+  users_with_taste_cluster: number
+  users_without_taste_cluster: number
+  avg_users_per_cluster: number
+  max_users_in_cluster: number
+  cluster_distribution: Array<{ cluster_id: number; user_count: number }>
 }
 
 export interface PaginatedResponse<T> {

@@ -23,14 +23,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.users': 'Пользователи',
     'nav.channels': 'Каналы',
     'nav.ab_testing': 'A/B Тестирование',
-    'nav.clusters': 'Кластеры',
+    'nav.clusters': 'Кластеры вкуса',
 
     // pages
     'page.dashboard.title': 'Панель управления',
     'page.users.title': 'Пользователи',
     'page.channels.title': 'Каналы',
     'page.ab_testing.title': 'A/B Тестирование',
-    'page.clusters.title': 'Кластеры постов',
+    'page.clusters.title': 'Кластеры вкуса',
 
     // dashboard
     'dashboard.users': 'Пользователей',
@@ -101,14 +101,17 @@ export const translations: Record<Lang, Record<string, string>> = {
     'ab_testing.treatment': 'Treatment',
     'ab_testing.no_trained_users': 'Нет обученных пользователей для сравнения',
 
-    // clusters
-    'clusters.recalculate': 'Пересчитать кластеры',
-    'clusters.total': 'Всего кластеров',
-    'clusters.posts_in_clusters': 'Постов в кластерах',
-    'clusters.unclustered_posts': 'Постов без кластера',
-    'clusters.distribution_title': 'Распределение по кластерам',
+    // clusters (taste clusters - users by preference vector)
+    'clusters.recalculate': 'Пересчитать кластеры вкуса',
+    'clusters.num_clusters': 'Кластеров',
+    'clusters.total_users': 'Всего пользователей',
+    'clusters.users_in_clusters': 'В кластерах вкуса',
+    'clusters.users_without_cluster': 'Без кластера',
+    'clusters.avg_users_per_cluster': 'Среднее в кластере',
+    'clusters.max_users_in_cluster': 'Макс. в кластере',
+    'clusters.distribution_title': 'Пользователей по кластерам',
     'clusters.cluster_id': 'ID кластера',
-    'clusters.post_count': 'Количество постов',
+    'clusters.user_count': 'Пользователей',
 
     // login
     'login.title': 'PPP Admin Dashboard',
@@ -141,14 +144,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.users': 'Users',
     'nav.channels': 'Channels',
     'nav.ab_testing': 'A/B Testing',
-    'nav.clusters': 'Clusters',
+    'nav.clusters': 'Taste Clusters',
 
     // pages
     'page.dashboard.title': 'Dashboard',
     'page.users.title': 'Users',
     'page.channels.title': 'Channels',
     'page.ab_testing.title': 'A/B Testing',
-    'page.clusters.title': 'Post Clusters',
+    'page.clusters.title': 'Taste Clusters',
 
     // dashboard
     'dashboard.users': 'Users',
@@ -219,14 +222,17 @@ export const translations: Record<Lang, Record<string, string>> = {
     'ab_testing.treatment': 'Treatment',
     'ab_testing.no_trained_users': 'No trained users for comparison',
 
-    // clusters
-    'clusters.recalculate': 'Recalculate clusters',
-    'clusters.total': 'Total clusters',
-    'clusters.posts_in_clusters': 'Posts in clusters',
-    'clusters.unclustered_posts': 'Unclustered posts',
-    'clusters.distribution_title': 'Cluster distribution',
+    // clusters (taste clusters - users by preference vector)
+    'clusters.recalculate': 'Recalculate taste clusters',
+    'clusters.num_clusters': 'Clusters',
+    'clusters.total_users': 'Total users',
+    'clusters.users_in_clusters': 'In taste clusters',
+    'clusters.users_without_cluster': 'Without cluster',
+    'clusters.avg_users_per_cluster': 'Avg per cluster',
+    'clusters.max_users_in_cluster': 'Max in cluster',
+    'clusters.distribution_title': 'Users per cluster',
     'clusters.cluster_id': 'Cluster ID',
-    'clusters.post_count': 'Post count',
+    'clusters.user_count': 'Users',
 
     // login
     'login.title': 'PPP Admin Dashboard',
