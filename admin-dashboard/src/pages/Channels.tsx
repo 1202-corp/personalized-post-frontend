@@ -14,6 +14,27 @@ const Channels: React.FC = () => {
   const pageSize = 50
   const { t } = useLanguage()
 
+  const formatTTL = (seconds: number | null): string => {
+    if (seconds === null) {
+      return t('channels.posts_ttl_no_posts')
+    }
+    if (seconds <= 0) {
+      return t('channels.posts_ttl_expired')
+    }
+    
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
+    const secs = seconds % 60
+    
+    if (hours > 0) {
+      return `${hours}ч ${minutes}м`
+    } else if (minutes > 0) {
+      return `${minutes}м ${secs}с`
+    } else {
+      return `${secs}с`
+    }
+  }
+
   useEffect(() => {
     loadChannels()
   }, [page])
@@ -53,6 +74,25 @@ const Channels: React.FC = () => {
       id: 'posts_count',
       name: t('channels.posts'),
       template: (item) => <Text>{item.posts_count}</Text>,
+    },
+    {
+      id: 'posts_ttl',
+      name: t('channels.posts_ttl'),
+      template: (item) => {
+        const ttlText = formatTTL(item.posts_ttl_remaining_seconds)
+        const isExpired = item.posts_ttl_remaining_seconds !== null && item.posts_ttl_remaining_seconds <= 0
+        const hasNoPosts = item.posts_ttl_remaining_seconds === null
+        
+        if (hasNoPosts) {
+          return <Text color="secondary">{ttlText}</Text>
+        }
+        
+        return (
+          <Label theme={isExpired ? 'danger' : 'success'}>
+            {ttlText}
+          </Label>
+        )
+      },
     },
     {
       id: 'is_default',

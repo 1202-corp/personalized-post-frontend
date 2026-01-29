@@ -87,6 +87,9 @@ export const translations: Record<Lang, Record<string, string>> = {
     'channels.default': 'По умолчанию',
     'channels.default_yes': 'Да',
     'channels.default_no': 'Нет',
+    'channels.posts_ttl': 'TTL постов',
+    'channels.posts_ttl_expired': 'Истек',
+    'channels.posts_ttl_no_posts': 'Нет постов',
 
     // ab testing
     'ab_testing.info': 'Сравнение эффективности разных алгоритмов рекомендаций. Пользователи автоматически распределяются по вариантам (50/50 по хешу user_id). control = cosine similarity, treatment_a = hybrid (cosine + recency). Процент лайков показывает какой алгоритм лучше предсказывает предпочтения.',
@@ -202,6 +205,9 @@ export const translations: Record<Lang, Record<string, string>> = {
     'channels.default': 'Default',
     'channels.default_yes': 'Yes',
     'channels.default_no': 'No',
+    'channels.posts_ttl': 'Posts TTL',
+    'channels.posts_ttl_expired': 'Expired',
+    'channels.posts_ttl_no_posts': 'No posts',
 
     // ab testing
     'ab_testing.info': 'Comparison of effectiveness of different recommendation algorithms. Users are automatically distributed across variants (50/50 by user_id hash). control = cosine similarity, treatment_a = hybrid (cosine + recency). Like rate shows which algorithm better predicts preferences.',

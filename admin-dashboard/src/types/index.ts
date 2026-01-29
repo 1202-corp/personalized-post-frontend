@@ -44,6 +44,7 @@ export interface Channel {
   title: string
   is_default: boolean
   posts_count: number
+  posts_ttl_remaining_seconds: number | null
 }
 
 export interface DashboardOverview {
