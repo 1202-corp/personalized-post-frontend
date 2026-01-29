@@ -283,15 +283,16 @@ function createCard(post) {
     const prevBtn = card.querySelector('.carousel-prev');
     const nextBtn = card.querySelector('.carousel-next');
 
-    if (carousel && track && (post.media_type === 'photo' || post.media_type === 'video') && post.media_file_id && post.channel_username) {
-        const imageIds = String(post.media_file_id).split(',').map(id => id.trim()).filter(id => id);
-        if (imageIds.length > 0) {
-            track.innerHTML = '';
-            dotsContainer.innerHTML = '';
-            let currentSlide = 0;
-            
-            imageIds.forEach((imgId, index) => {
-                const mediaUrl = getMediaUrl(post, imgId);
+    if (carousel && track && (post.media_type === 'photo' || post.media_type === 'video') && post.telegram_message_id && post.channel_username) {
+        // Single media per post - use telegram_message_id
+        track.innerHTML = '';
+        dotsContainer.innerHTML = '';
+        let currentSlide = 0;
+        
+        // Only one slide per post (Telegram returns the photo for the message)
+        {
+            const mediaUrl = getMediaUrl(post);
+            const index = 0;
                 
                 // Create slide container with placeholder
                 const slide = document.createElement('div');
@@ -337,47 +338,15 @@ function createCard(post) {
                 }
                 
                 slide.appendChild(media);
-                track.appendChild(slide);
-                
-                // Add dot
-                const dot = document.createElement('div');
-                dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-                dot.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    goToSlide(index);
-                });
-                dotsContainer.appendChild(dot);
-            });
-            
-            // Hide arrows if only 1 image
-            if (imageIds.length <= 1) {
-                prevBtn.classList.add('hidden');
-                nextBtn.classList.add('hidden');
-                dotsContainer.style.display = 'none';
-            }
-            
-            const goToSlide = (index) => {
-                currentSlide = index;
-                track.style.transform = `translateX(-${index * 100}%)`;
-                dotsContainer.querySelectorAll('.carousel-dot').forEach((d, i) => {
-                    d.classList.toggle('active', i === index);
-                });
-            };
-            
-            prevBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (currentSlide > 0) goToSlide(currentSlide - 1);
-            });
-            
-            nextBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (currentSlide < imageIds.length - 1) goToSlide(currentSlide + 1);
-            });
-            
-            carousel.classList.remove('hidden');
-        } else {
-            carousel.classList.add('hidden');
+            track.appendChild(slide);
         }
+        
+        // Hide arrows and dots for single image
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+        dotsContainer.style.display = 'none';
+            
+        carousel.classList.remove('hidden');
     } else if (carousel) {
         carousel.classList.add('hidden');
     }
@@ -673,9 +642,9 @@ function preloadImage(url) {
 }
 
 // Get media URL for a post
-function getMediaUrl(post, mediaId) {
+function getMediaUrl(post) {
     const endpoint = post.media_type === 'video' ? 'video' : 'photo';
-    return `${config.MEDIA_BASE_URL}/${endpoint}?channel_username=${encodeURIComponent(post.channel_username)}&message_id=${encodeURIComponent(mediaId)}`;
+    return `${config.MEDIA_BASE_URL}/${endpoint}?channel_username=${encodeURIComponent(post.channel_username)}&message_id=${encodeURIComponent(post.telegram_message_id)}`;
 }
 
 // Prefetch images with priority - current and next few first
@@ -697,13 +666,10 @@ function prefetchAllImages() {
     
     // Preload in priority order
     priorityOrder.forEach((post, idx) => {
-        if ((post.media_type === 'photo') && post.media_file_id && post.channel_username) {
-            const mediaIds = String(post.media_file_id).split(',').map(id => id.trim()).filter(id => id);
-            mediaIds.forEach(mediaId => {
-                const url = getMediaUrl(post, mediaId);
-                // Stagger preloading to avoid overwhelming the network
-                setTimeout(() => preloadImage(url), idx * 50);
-            });
+        if ((post.media_type === 'photo') && post.telegram_message_id && post.channel_username) {
+            const url = getMediaUrl(post);
+            // Stagger preloading to avoid overwhelming the network
+            setTimeout(() => preloadImage(url), idx * 50);
         }
     });
 }
@@ -713,11 +679,8 @@ function preloadNextPost() {
     const nextIndex = currentIndex + 1;
     if (nextIndex < posts.length) {
         const post = posts[nextIndex];
-        if ((post.media_type === 'photo') && post.media_file_id && post.channel_username) {
-            const mediaIds = String(post.media_file_id).split(',').map(id => id.trim()).filter(id => id);
-            mediaIds.forEach(mediaId => {
-                preloadImage(getMediaUrl(post, mediaId));
-            });
+        if ((post.media_type === 'photo') && post.telegram_message_id && post.channel_username) {
+            preloadImage(getMediaUrl(post));
         }
     }
 }
