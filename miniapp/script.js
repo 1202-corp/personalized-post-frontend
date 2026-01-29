@@ -12,12 +12,22 @@ const config = window.APP_CONFIG || {
     MEDIA_BASE_URL: '/media',
     SWIPE_THRESHOLD: 100,
     ROTATION_FACTOR: 0.1,
+    TRAINING_POSTS_PER_CHANNEL: 50,
+    TRAINING_INITIAL_POSTS_PER_CHANNEL: 7,
+    TRAINING_MAX_EXTRA_FROM_DISLIKE: 5,
+    TRAINING_MAX_EXTRA_FROM_SKIP: 10,
 };
 
 // State
-let posts = [];
-let currentIndex = 0;
+let posts = [];           // Full pool of posts
+let queue = [];           // Indices of posts to show (starts with first N per channel, grows on dislikes)
+let shownIndices = new Set();  // Track already shown posts to prevent duplicates
+let currentQueueIndex = 0;
 let ratedCount = 0;
+let extraFromDislike = 0;
+// Use config values for training settings
+const MAX_EXTRA_FROM_DISLIKE = config.TRAINING_MAX_EXTRA_FROM_DISLIKE;
+const INITIAL_POSTS_PER_CHANNEL = config.TRAINING_INITIAL_POSTS_PER_CHANNEL;
 let userId = null;
 let userLanguage = 'en';
 let isLoading = true;
@@ -169,7 +179,7 @@ async function loadPosts() {
                 }
             }
             
-            // Fetch posts from API
+            // Fetch posts from API (use config for pool size)
             const response = await fetch(`${config.API_BASE_URL}/posts/training`, {
                 method: 'POST',
                 headers: {
@@ -178,7 +188,7 @@ async function loadPosts() {
                 body: JSON.stringify({
                     user_telegram_id: userId,
                     channel_usernames: channelUsernames,
-                    posts_per_channel: 7,
+                    posts_per_channel: config.TRAINING_POSTS_PER_CHANNEL,
                 }),
             });
             
@@ -200,6 +210,31 @@ async function loadPosts() {
     if (posts.length === 0) {
         showEmptyState();
     } else {
+        // Initialize queue with first N posts (interleaved by channel)
+        // Group posts by channel
+        const postsByChannel = {};
+        posts.forEach((post, idx) => {
+            const ch = post.channel_username || post.channel_title || 'unknown';
+            if (!postsByChannel[ch]) postsByChannel[ch] = [];
+            postsByChannel[ch].push(idx);
+        });
+        
+        // Interleave: take INITIAL_POSTS_PER_CHANNEL from each channel
+        const channelLists = Object.values(postsByChannel);
+        queue = [];
+        for (let i = 0; i < INITIAL_POSTS_PER_CHANNEL; i++) {
+            for (const list of channelLists) {
+                if (i < list.length) {
+                    queue.push(list[i]);
+                }
+            }
+        }
+        
+        // Reset state
+        currentQueueIndex = 0;
+        shownIndices.clear();
+        extraFromDislike = 0;
+        
         renderCurrentCard();
         updateProgress();
         // Prefetch in background after small delay to not block first render
@@ -242,14 +277,20 @@ function renderCurrentCard() {
     const existingCards = cardContainer.querySelectorAll('.card:not(#cardTemplate)');
     existingCards.forEach(card => card.remove());
     
-    if (currentIndex >= posts.length) {
+    // Check if queue is exhausted
+    if (currentQueueIndex >= queue.length) {
         showEmptyState();
         return;
     }
     
-    const post = posts[currentIndex];
+    // Get post from queue
+    const postIndex = queue[currentQueueIndex];
+    const post = posts[postIndex];
     const card = createCard(post);
     cardContainer.appendChild(card);
+    
+    // Mark as shown
+    shownIndices.add(postIndex);
     
     // Setup event listeners
     setupCardEvents(card);
@@ -495,6 +536,22 @@ async function handleAction(action, card) {
     } else if (action === 'dislike') {
         card.classList.add('swiping-left');
         tg.HapticFeedback.impactOccurred('light');
+        
+        // Add extra post from reserve on dislike (up to MAX_EXTRA_FROM_DISLIKE)
+        if (extraFromDislike < MAX_EXTRA_FROM_DISLIKE) {
+            // Find available indices (not in queue and not shown)
+            const availableIndices = [];
+            for (let i = 0; i < posts.length; i++) {
+                if (!queue.includes(i) && !shownIndices.has(i)) {
+                    availableIndices.push(i);
+                }
+            }
+            if (availableIndices.length > 0) {
+                const randomIdx = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+                queue.push(randomIdx);
+                extraFromDislike++;
+            }
+        }
     } else {
         card.classList.add('swiping-up');
     }
@@ -506,7 +563,7 @@ async function handleAction(action, card) {
     
     // Wait for animation
     setTimeout(() => {
-        currentIndex++;
+        currentQueueIndex++;
         updateProgress();
         renderCurrentCard();
         // Preload next post's images
@@ -540,8 +597,8 @@ async function sendInteraction(postId, interactionType) {
 }
 
 function updateProgress() {
-    const total = posts.length;
-    const current = Math.min(currentIndex, total);
+    const total = queue.length;  // Use queue length (grows on dislikes)
+    const current = Math.min(currentQueueIndex, total);
     const percent = total > 0 ? (current / total) * 100 : 0;
     
     progressBar.style.width = `${percent}%`;

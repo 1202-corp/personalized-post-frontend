@@ -15,6 +15,16 @@ const CONFIG = {
     // Media endpoint for fetching photos from user-bot
     MEDIA_BASE_URL: window.MINIAPP_MEDIA_URL || '/media',
     
+    // Training settings (should match .env values)
+    // Number of posts per channel to fetch for training pool
+    TRAINING_POSTS_PER_CHANNEL: window.TRAINING_POSTS_PER_CHANNEL || 50,
+    // Initial posts per channel for training queue
+    TRAINING_INITIAL_POSTS_PER_CHANNEL: window.TRAINING_INITIAL_POSTS_PER_CHANNEL || 7,
+    // Max extra posts from dislikes
+    TRAINING_MAX_EXTRA_FROM_DISLIKE: window.TRAINING_MAX_EXTRA_FROM_DISLIKE || 5,
+    // Max extra posts from skips  
+    TRAINING_MAX_EXTRA_FROM_SKIP: window.TRAINING_MAX_EXTRA_FROM_SKIP || 10,
+    
     // Swipe gesture settings
     SWIPE_THRESHOLD: 100,
     ROTATION_FACTOR: 0.1,
