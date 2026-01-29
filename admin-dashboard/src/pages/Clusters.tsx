@@ -4,35 +4,29 @@ import { api } from '../services/api'
 import { ClusterStats } from '../types'
 import type { TableColumnConfig } from '@gravity-ui/uikit'
 import { useLanguage } from '../context/LanguageContext'
+import { useDataLoader } from '../hooks/useDataLoader'
 import './Clusters.css'
 
 const Clusters: React.FC = () => {
-  const [clusterStats, setClusterStats] = useState<ClusterStats | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { data: clusterStats, loading, load: loadClusterStats } = useDataLoader<ClusterStats>()
   const [recalculating, setRecalculating] = useState(false)
   const { t } = useLanguage()
 
   useEffect(() => {
-    loadClusterStats()
-  }, [])
-
-  const loadClusterStats = async () => {
-    try {
-      setLoading(true)
+    loadClusterStats(async () => {
       const response = await api.get<ClusterStats>('/admin/clusters/stats')
-      setClusterStats(response.data)
-    } catch (error) {
-      console.error('Error loading cluster stats:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+      return response.data
+    })
+  }, [loadClusterStats])
 
   const handleRecalculate = async () => {
     try {
       setRecalculating(true)
       await api.post('/admin/clusters/recalculate', { n_clusters: 50 })
-      await loadClusterStats()
+      await loadClusterStats(async () => {
+        const response = await api.get<ClusterStats>('/admin/clusters/stats')
+        return response.data
+      })
     } catch (error) {
       console.error('Error recalculating clusters:', error)
     } finally {
