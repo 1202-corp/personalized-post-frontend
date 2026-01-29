@@ -24,3 +24,62 @@
   justify-content: center;
   margin-top: 16px;
 }
+
+/* Section styling - both Admin Management and Users List */
+.users-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: var(--g-color-base-background);
+  border-radius: 8px;
+  border: 1px solid var(--g-color-line-generic);
+}
+
+.users-section-title {
+  margin-bottom: 8px;
+}
+
+.users-admins-controls {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.users-admin-select {
+  flex: 0 0 auto;
+  width: 400px; /* Фиксированная ширина вместо flex: 1 */
+  max-width: 400px;
+}
+
+/* Уменьшаем высоту и ширину выпадающего списка в 3 раза */
+.users-admin-select :global(.g-select-popup),
+.users-admin-select :global([data-popper-placement]),
+.users-admin-select :global(.g-popup) {
+  max-height: 120px !important; /* Примерно в 3 раза меньше стандартной высоты (~360px) */
+  max-width: 400px !important; /* Ограничиваем ширину popup */
+  width: 400px !important;
+  overflow-y: auto !important;
+}
+
+/* Альтернативный селектор для выпадающего списка через глобальные стили */
+:global(.g-select-popup) {
+  max-height: 120px !important;
+  overflow-y: auto !important;
+}
+
+.users-admin-add-button {
+  flex-shrink: 0;
+}
+
+.users-admins-table-wrapper {
+  margin-top: 16px;
+}
+
+.users-admins-list-title {
+  margin-bottom: 12px;
+}
+
+.users-admins-table {
+  width: 100%;
+}

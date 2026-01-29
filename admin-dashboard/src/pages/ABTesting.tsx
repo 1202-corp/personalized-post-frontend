@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Card, Text, Loader } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { ABTestResults } from '../types'
 import { useLanguage } from '../context/LanguageContext'
+import { useDataLoader } from '../hooks/useDataLoader'
 import './ABTesting.css'
 
 const ABTesting: React.FC = () => {
-  const [abTestData, setAbTestData] = useState<ABTestResults | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { data: abTestData, loading, load: loadABTestData } = useDataLoader<ABTestResults>()
   const { t } = useLanguage()
 
   useEffect(() => {
-    loadABTestData()
-  }, [])
-
-  const loadABTestData = async () => {
-    try {
+    loadABTestData(async () => {
       const response = await api.get<ABTestResults>('/ab-testing/results')
-      setAbTestData(response.data)
-    } catch (error) {
-      console.error('Error loading AB test data:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+      return response.data
+    })
+  }, [loadABTestData])
 
   if (loading) {
     return (

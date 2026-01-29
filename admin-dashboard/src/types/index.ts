@@ -18,15 +18,23 @@ export interface RefreshTokenResponse {
   token_type: string
 }
 
+export type UserRole = 'guest' | 'member' | 'admin'
+export type UserStatus = 'new' | 'onboarding' | 'training' | 'trained' | 'active' | 'churned'
+
 export interface User {
   id: number
   telegram_id: number
   username: string | null
-  is_trained: boolean
+  first_name: string | null
+  last_name: string | null
+  status: UserStatus
+  user_role: UserRole
   language: string
   bonus_channels_count: number
   created_at: string | null
   last_activity_at: string | null
+  // Backward compatibility: computed property
+  is_trained?: boolean
 }
 
 export interface Channel {
@@ -36,6 +44,7 @@ export interface Channel {
   title: string
   is_default: boolean
   posts_count: number
+  posts_ttl_remaining_seconds: number | null
 }
 
 export interface DashboardOverview {

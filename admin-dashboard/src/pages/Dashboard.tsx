@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Card, Text, Loader } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { DashboardData } from '../types'
 import { useLanguage } from '../context/LanguageContext'
+import { useDataLoader } from '../hooks/useDataLoader'
 import './Dashboard.css'
 
 const Dashboard: React.FC = () => {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { data: dashboardData, loading, load } = useDataLoader<DashboardData>()
   const { t } = useLanguage()
 
   useEffect(() => {
-    loadData()
-  }, [])
-
-  const loadData = async () => {
-    try {
+    load(async () => {
       const dashboardRes = await api.get<DashboardData>('/analytics/dashboard')
-      setDashboardData(dashboardRes.data)
-    } catch (error) {
-      console.error('Error loading dashboard data:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+      return dashboardRes.data
+    })
+  }, [load])
 
   if (loading) {
     return (
