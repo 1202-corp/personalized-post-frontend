@@ -150,9 +150,10 @@ const Users: React.FC = () => {
       id: 'status',
       name: t('users.status'),
       template: (item) => {
+        console.log('Status template called with item:', item, 'status:', item.status)
         if (!item.status) {
           console.warn('User item missing status:', item)
-          return <Label theme="info" value="-" />
+          return <Label theme="info">-</Label>
         }
         const statusLabels: Record<string, string> = {
           new: t('users.status_new'),
@@ -171,11 +172,13 @@ const Users: React.FC = () => {
           churned: 'danger',
         }
         const statusValue = String(item.status).toLowerCase()
+        const labelText = statusLabels[statusValue] || item.status
+        const theme = themeMap[statusValue] || 'info'
+        console.log('Status rendering:', { statusValue, labelText, theme })
         return (
-          <Label
-            theme={themeMap[statusValue] || 'info'}
-            value={statusLabels[statusValue] || item.status}
-          />
+          <Label theme={theme}>
+            {labelText}
+          </Label>
         )
       },
     },
@@ -183,9 +186,10 @@ const Users: React.FC = () => {
       id: 'user_role',
       name: t('users.user_role'),
       template: (item) => {
+        console.log('Role template called with item:', item, 'user_role:', item.user_role)
         if (!item.user_role) {
           console.warn('User item missing user_role:', item)
-          return <Label theme="info" value="-" />
+          return <Label theme="info">-</Label>
         }
         const roleLabels: Record<string, string> = {
           guest: t('users.role_guest'),
@@ -198,11 +202,13 @@ const Users: React.FC = () => {
           admin: 'success',
         }
         const roleValue = String(item.user_role).toLowerCase()
+        const labelText = roleLabels[roleValue] || item.user_role
+        const theme = themeMap[roleValue] || 'info'
+        console.log('Role rendering:', { roleValue, labelText, theme })
         return (
-          <Label
-            theme={themeMap[roleValue] || 'info'}
-            value={roleLabels[roleValue] || item.user_role}
-          />
+          <Label theme={theme}>
+            {labelText}
+          </Label>
         )
       },
     },

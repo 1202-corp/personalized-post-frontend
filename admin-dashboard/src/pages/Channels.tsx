@@ -58,10 +58,9 @@ const Channels: React.FC = () => {
       id: 'is_default',
       name: t('channels.default'),
       template: (item) => (
-        <Label
-          theme={item.is_default ? 'success' : 'normal'}
-          value={item.is_default ? t('channels.default_yes') : t('channels.default_no')}
-        />
+        <Label theme={item.is_default ? 'success' : 'normal'}>
+          {item.is_default ? t('channels.default_yes') : t('channels.default_no')}
+        </Label>
       ),
     },
   ]
