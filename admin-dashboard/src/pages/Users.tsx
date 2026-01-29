@@ -33,6 +33,7 @@ const Users: React.FC = () => {
       const response = await api.get<{ total: number; users: User[] }>('/admin/users', {
         params: { skip, limit: pageSize },
       })
+      console.log('Loaded users:', response.data.users)
       setUsers(response.data.users)
       setTotal(response.data.total)
     } catch (error) {
@@ -149,6 +150,10 @@ const Users: React.FC = () => {
       id: 'status',
       name: t('users.status'),
       template: (item) => {
+        if (!item.status) {
+          console.warn('User item missing status:', item)
+          return <Label theme="info" value="-" />
+        }
         const statusLabels: Record<string, string> = {
           new: t('users.status_new'),
           onboarding: t('users.status_onboarding'),
@@ -165,10 +170,11 @@ const Users: React.FC = () => {
           active: 'success',
           churned: 'danger',
         }
+        const statusValue = String(item.status).toLowerCase()
         return (
           <Label
-            theme={themeMap[item.status] || 'info'}
-            value={statusLabels[item.status] || item.status}
+            theme={themeMap[statusValue] || 'info'}
+            value={statusLabels[statusValue] || item.status}
           />
         )
       },
@@ -177,6 +183,10 @@ const Users: React.FC = () => {
       id: 'user_role',
       name: t('users.user_role'),
       template: (item) => {
+        if (!item.user_role) {
+          console.warn('User item missing user_role:', item)
+          return <Label theme="info" value="-" />
+        }
         const roleLabels: Record<string, string> = {
           guest: t('users.role_guest'),
           member: t('users.role_member'),
@@ -187,10 +197,11 @@ const Users: React.FC = () => {
           member: 'warning',
           admin: 'success',
         }
+        const roleValue = String(item.user_role).toLowerCase()
         return (
           <Label
-            theme={themeMap[item.user_role] || 'info'}
-            value={roleLabels[item.user_role] || item.user_role}
+            theme={themeMap[roleValue] || 'info'}
+            value={roleLabels[roleValue] || item.user_role}
           />
         )
       },
