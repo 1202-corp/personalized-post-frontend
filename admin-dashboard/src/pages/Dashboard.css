@@ -1,11 +1,13 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .dashboard-title {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
+  font-size: 1.75rem;
+  font-weight: 600;
 }
 
 .dashboard-loading {
@@ -22,10 +24,23 @@
 }
 
 .stat-card {
-  padding: 20px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  min-height: 120px;
+}
+
+.stat-card .g-text_variant_header-1 {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+}
+
+.stat-card .g-text_variant_body-1 {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .dashboard-metrics {
@@ -35,10 +50,16 @@
 }
 
 .metric-card {
-  padding: 20px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  min-height: 140px;
+}
+
+.metric-card .g-text_variant_header-2 {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
 }
 
 .metric-card-green {

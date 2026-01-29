@@ -56,9 +56,10 @@ body {
 }
 
 .header h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 12px;
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
 }
 
 .progress-container {
@@ -95,9 +96,9 @@ body {
 
 /* Card */
 .card {
-    width: calc(100% - 16px);
-    max-width: 450px;
-    max-height: calc(100dvh - 140px);
+    width: calc(100% - 24px);
+    max-width: 440px;
+    max-height: calc(100dvh - 150px);
     background-color: var(--tg-theme-bg-color);
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
@@ -153,7 +154,7 @@ body {
 
 /* Card Content */
 .card-content {
-    padding: 12px;
+    padding: 16px;
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -165,9 +166,9 @@ body {
 .card-source {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
     border-bottom: 1px solid var(--tg-theme-secondary-bg-color);
 }
 
@@ -177,6 +178,7 @@ body {
 
 .source-name {
     font-weight: 600;
+    font-size: 0.9375rem;
     color: var(--tg-theme-link-color);
     text-decoration: none;
 }
@@ -302,10 +304,11 @@ body {
 }
 
 .card-text {
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 0.9375rem;
+    line-height: 1.6;
     white-space: pre-wrap;
     word-wrap: break-word;
+    color: var(--tg-theme-text-color);
 }
 
 /* HTML formatting styles for post text */
@@ -383,8 +386,8 @@ body {
 }
 
 .btn-action {
-    width: 56px;
-    height: 56px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     border: none;
     display: flex;
@@ -392,7 +395,7 @@ body {
     justify-content: center;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    font-size: 1.5rem;
+    font-size: 1.625rem;
 }
 
 .btn-action:active {
@@ -402,13 +405,13 @@ body {
 .btn-like {
     background-color: var(--color-like);
     color: white;
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.35);
 }
 
 .btn-dislike {
     background-color: var(--color-dislike);
     color: white;
-    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+    box-shadow: 0 4px 16px rgba(244, 67, 54, 0.35);
 }
 
 .btn-skip {
