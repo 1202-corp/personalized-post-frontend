@@ -13,6 +13,7 @@ const Channels: React.FC = () => {
   const [total, setTotal] = useState(0)
   const pageSize = 50
   const { t } = useLanguage()
+  const [dataFetchTime, setDataFetchTime] = useState(Date.now())
   const [currentTime, setCurrentTime] = useState(Date.now())
 
   // Update current time every second to refresh TTL display
@@ -44,19 +45,17 @@ const Channels: React.FC = () => {
     }
   }
 
-  // Calculate current TTL for each channel based on server time and remaining seconds
+  // Calculate current TTL for each channel based on elapsed time since data fetch
   const channelsWithCurrentTTL = useMemo(() => {
+    const elapsedSeconds = Math.floor((currentTime - dataFetchTime) / 1000)
     return channels.map(channel => {
       if (channel.posts_ttl_remaining_seconds === null) {
         return { ...channel, currentTTL: null }
       }
-      // Calculate elapsed time since data was fetched (approximate)
-      // This is a simple approximation - for exact time, we'd need server timestamp
-      const elapsed = Math.floor((Date.now() - currentTime) / 1000)
-      const currentTTL = Math.max(0, channel.posts_ttl_remaining_seconds - elapsed)
+      const currentTTL = Math.max(0, channel.posts_ttl_remaining_seconds - elapsedSeconds)
       return { ...channel, currentTTL }
     })
-  }, [channels, currentTime])
+  }, [channels, currentTime, dataFetchTime])
 
   useEffect(() => {
     loadChannels()
@@ -71,6 +70,7 @@ const Channels: React.FC = () => {
       })
       setChannels(response.data.channels)
       setTotal(response.data.total)
+      setDataFetchTime(Date.now()) // Update fetch time for TTL calculation
     } catch (error) {
       console.error('Error loading channels:', error)
     } finally {
