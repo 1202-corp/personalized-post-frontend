@@ -120,11 +120,16 @@ export interface ABTestResults {
   variants: Record<string, ABTestVariant>
 }
 
+export interface ClusterDistributionItem {
+  cluster_id: number
+  post_count: number
+}
+
 export interface ClusterStats {
   total_clusters: number
   total_posts: number
   posts_with_clusters: number
-  cluster_distribution: Record<number, number>
+  cluster_distribution: ClusterDistributionItem[]
 }
 
 export interface PaginatedResponse<T> {

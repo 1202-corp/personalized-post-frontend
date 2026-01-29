@@ -46,12 +46,7 @@ const Clusters: React.FC = () => {
     return <Text>{t('common.error_loading')}</Text>
   }
 
-  const distributionData = Object.entries(clusterStats.cluster_distribution || {}).map(
-    ([clusterId, postCount]) => ({
-      cluster_id: parseInt(clusterId),
-      post_count: postCount,
-    })
-  )
+  const distributionData = clusterStats.cluster_distribution || []
 
   const columns: TableColumnConfig<typeof distributionData[0]>[] = [
     {
