@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Table, Text, Loader, Pagination, Label, Link } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { Channel } from '../types'
@@ -13,6 +13,15 @@ const Channels: React.FC = () => {
   const [total, setTotal] = useState(0)
   const pageSize = 50
   const { t } = useLanguage()
+  const [currentTime, setCurrentTime] = useState(Date.now())
+
+  // Update current time every second to refresh TTL display
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(Date.now())
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
 
   const formatTTL = (seconds: number | null): string => {
     if (seconds === null) {
@@ -34,6 +43,20 @@ const Channels: React.FC = () => {
       return `${secs}с`
     }
   }
+
+  // Calculate current TTL for each channel based on server time and remaining seconds
+  const channelsWithCurrentTTL = useMemo(() => {
+    return channels.map(channel => {
+      if (channel.posts_ttl_remaining_seconds === null) {
+        return { ...channel, currentTTL: null }
+      }
+      // Calculate elapsed time since data was fetched (approximate)
+      // This is a simple approximation - for exact time, we'd need server timestamp
+      const elapsed = Math.floor((Date.now() - currentTime) / 1000)
+      const currentTTL = Math.max(0, channel.posts_ttl_remaining_seconds - elapsed)
+      return { ...channel, currentTTL }
+    })
+  }, [channels, currentTime])
 
   useEffect(() => {
     loadChannels()
@@ -78,10 +101,11 @@ const Channels: React.FC = () => {
     {
       id: 'posts_ttl',
       name: t('channels.posts_ttl'),
-      template: (item) => {
-        const ttlText = formatTTL(item.posts_ttl_remaining_seconds)
-        const isExpired = item.posts_ttl_remaining_seconds !== null && item.posts_ttl_remaining_seconds <= 0
-        const hasNoPosts = item.posts_ttl_remaining_seconds === null
+      template: (item: Channel & { currentTTL?: number | null }) => {
+        const ttlSeconds = item.currentTTL !== undefined ? item.currentTTL : item.posts_ttl_remaining_seconds
+        const ttlText = formatTTL(ttlSeconds)
+        const isExpired = ttlSeconds !== null && ttlSeconds <= 0
+        const hasNoPosts = ttlSeconds === null
         
         if (hasNoPosts) {
           return <Text color="secondary">{ttlText}</Text>
@@ -119,7 +143,7 @@ const Channels: React.FC = () => {
         {t('page.channels.title')}
       </Text>
 
-      <Table data={channels} columns={columns} className="channels-table" />
+      <Table data={channelsWithCurrentTTL} columns={columns} className="channels-table" />
 
       <div className="channels-pagination">
         <Pagination
