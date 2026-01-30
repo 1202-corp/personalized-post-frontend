@@ -6,17 +6,19 @@
 // Telegram WebApp instance
 const tg = window.Telegram.WebApp;
 
-// Configuration from config.js
+// Configuration from config.js (base config, training values loaded from API)
 const config = window.APP_CONFIG || {
     API_BASE_URL: '/api/v1',
     MEDIA_BASE_URL: '/media',
     SWIPE_THRESHOLD: 100,
     ROTATION_FACTOR: 0.1,
-    TRAINING_POSTS_PER_CHANNEL: 50,
-    TRAINING_INITIAL_POSTS_PER_CHANNEL: 8,
-    TRAINING_MAX_EXTRA_FROM_DISLIKE: 5,
-    TRAINING_MAX_EXTRA_FROM_SKIP: 7,
 };
+
+// Training settings (loaded from API /config/training)
+let TRAINING_POSTS_PER_CHANNEL = 50;      // default, will be overwritten
+let INITIAL_POSTS_PER_CHANNEL = 8;        // default, will be overwritten
+let MAX_EXTRA_FROM_DISLIKE = 5;           // default, will be overwritten
+let MAX_EXTRA_FROM_SKIP = 7;              // default, will be overwritten
 
 // State
 let posts = [];           // Full pool of posts
@@ -26,10 +28,6 @@ let currentQueueIndex = 0;
 let ratedCount = 0;
 let extraFromDislike = 0;
 let extraFromSkip = 0;
-// Use config values for training settings
-const MAX_EXTRA_FROM_DISLIKE = config.TRAINING_MAX_EXTRA_FROM_DISLIKE;
-const MAX_EXTRA_FROM_SKIP = config.TRAINING_MAX_EXTRA_FROM_SKIP;
-const INITIAL_POSTS_PER_CHANNEL = config.TRAINING_INITIAL_POSTS_PER_CHANNEL;
 let userId = null;
 let userLanguage = 'en';
 let isLoading = true;
@@ -90,8 +88,32 @@ async function init() {
         loadingText.textContent = window.i18n.t('loading');
     }
     
+    // Load training config from API (overrides defaults with .env values)
+    await loadTrainingConfig();
+    
     // Load posts
     await loadPosts();
+}
+
+/**
+ * Load training configuration from API (values from .env)
+ */
+async function loadTrainingConfig() {
+    try {
+        const response = await fetch(`${config.API_BASE_URL}/config/training`);
+        if (response.ok) {
+            const cfg = await response.json();
+            TRAINING_POSTS_PER_CHANNEL = cfg.posts_per_channel || TRAINING_POSTS_PER_CHANNEL;
+            INITIAL_POSTS_PER_CHANNEL = cfg.initial_posts_per_channel || INITIAL_POSTS_PER_CHANNEL;
+            MAX_EXTRA_FROM_DISLIKE = cfg.max_extra_from_dislike || MAX_EXTRA_FROM_DISLIKE;
+            MAX_EXTRA_FROM_SKIP = cfg.max_extra_from_skip || MAX_EXTRA_FROM_SKIP;
+            console.log(`Training config loaded: pool=${TRAINING_POSTS_PER_CHANNEL}, initial=${INITIAL_POSTS_PER_CHANNEL}, maxDislike=${MAX_EXTRA_FROM_DISLIKE}, maxSkip=${MAX_EXTRA_FROM_SKIP}`);
+        } else {
+            console.warn('Failed to load training config, using defaults');
+        }
+    } catch (e) {
+        console.warn('Error loading training config:', e);
+    }
 }
 
 /**
@@ -178,7 +200,7 @@ async function loadPosts() {
                 body: JSON.stringify({
                     user_telegram_id: userId,
                     channel_usernames: channelUsernames,
-                    posts_per_channel: config.TRAINING_POSTS_PER_CHANNEL,
+                    posts_per_channel: TRAINING_POSTS_PER_CHANNEL,
                 }),
             });
             if (response.ok) {
