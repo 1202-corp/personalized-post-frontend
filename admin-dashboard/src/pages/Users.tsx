@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { Table, Text, Loader, Pagination, Label, Select, Button } from '@gravity-ui/uikit'
+import { Table, Text, Loader, Pagination, Label, Select } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { User } from '../types'
 import type { TableColumnConfig } from '@gravity-ui/uikit'
@@ -250,13 +250,12 @@ const Users: React.FC = () => {
       id: 'actions',
       name: '',
       template: (item) => (
-        <Button
-          view="flat-danger"
-          size="s"
+        <button
+          className="btn-reset btn-danger"
           onClick={() => handleRemoveAdmin(item.id)}
         >
           {t('users.remove_admin')}
-        </Button>
+        </button>
       ),
     },
   ]
@@ -300,14 +299,13 @@ const Users: React.FC = () => {
             loading={allUsersLoading}
             className="users-admin-select"
           />
-          <Button
-            view="action"
+          <button
+            className="btn-reset btn-primary users-admin-add-button"
             onClick={handleAddAdmin}
             disabled={!selectedUserId}
-            className="users-admin-add-button"
           >
             {t('users.add_admin')}
-          </Button>
+          </button>
         </div>
 
         <div className="users-admins-table-wrapper">

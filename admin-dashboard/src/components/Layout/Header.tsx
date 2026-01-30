@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Text } from '@gravity-ui/uikit'
+import { Text } from '@gravity-ui/uikit'
 import { ArrowRightToSquare } from '@gravity-ui/icons'
 import { useLanguage } from '../../context/LanguageContext'
 import './Header.css'
@@ -15,22 +15,13 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
     <header className="header">
       <Text variant="header-2">{t('header.title')}</Text>
       <div className="header-actions">
-        <Button
-          view="outlined"
-          size="m"
-          onClick={toggleLanguage}
-          className="language-button"
-        >
+        <button className="btn-reset btn-outlined language-button" onClick={toggleLanguage}>
           {language.toUpperCase()}
-        </Button>
-        <Button
-          view="outlined"
-          size="m"
-          onClick={onLogout}
-          iconStart={ArrowRightToSquare}
-        >
+        </button>
+        <button className="btn-reset btn-outlined" onClick={onLogout}>
+          <ArrowRightToSquare width={16} height={16} style={{ marginRight: 8 }} />
           {t('common.logout')}
-        </Button>
+        </button>
       </div>
     </header>
   )

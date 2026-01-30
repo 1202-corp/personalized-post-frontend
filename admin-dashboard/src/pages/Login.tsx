@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, TextInput, Card, Text } from '@gravity-ui/uikit'
+import { TextInput, Card, Text } from '@gravity-ui/uikit'
 import { useAuth } from '../context/AuthContext'
 import { useLanguage } from '../context/LanguageContext'
 import './Login.css'
@@ -52,7 +52,6 @@ const Login: React.FC = () => {
               placeholder={t('login.username_placeholder')}
               value={username}
               onUpdate={setUsername}
-              size="l"
               disabled={loading}
             />
 
@@ -62,20 +61,16 @@ const Login: React.FC = () => {
               placeholder={t('login.password_placeholder')}
               value={password}
               onUpdate={setPassword}
-              size="l"
               disabled={loading}
             />
 
-            <Button
+            <button
               type="submit"
-              view="action"
-              size="l"
-              width="max"
-              loading={loading}
-              disabled={!username || !password}
+              disabled={!username || !password || loading}
+              className="btn-reset btn-primary btn-full btn-flat-large login-submit-button"
             >
               {t('common.login')}
-            </Button>
+            </button>
           </form>
         </div>
       </Card>

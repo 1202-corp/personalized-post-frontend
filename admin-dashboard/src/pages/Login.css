@@ -33,6 +33,31 @@
   gap: 16px;
 }
 
+/* Strong override for Sign In button padding */
+.login-submit-button,
+html body .login-submit-button.g-button,
+html body button.login-submit-button.g-button,
+html body .login-submit-button[class*="g-button_size_"] {
+  --g-button-padding: 0px !important;
+  --_--padding: 0px !important;
+  padding: 0 !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  min-height: auto !important;
+}
+
+.login-submit-button .g-button__text,
+.login-submit-button .g-button__content {
+  line-height: normal !important;
+}
+
+.btn-flat-large {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
 .login-error {
   padding: 12px;
   background: var(--g-color-base-danger-light);

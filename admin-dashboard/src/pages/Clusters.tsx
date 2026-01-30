@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Card, Text, Loader, Button, Table, Label } from '@gravity-ui/uikit'
+import { Card, Text, Loader, Table, Label } from '@gravity-ui/uikit'
 import { api } from '../services/api'
 import { TasteClusterStats } from '../types'
 import type { TableColumnConfig } from '@gravity-ui/uikit'
@@ -104,14 +104,13 @@ const Clusters: React.FC = () => {
         <Text variant="header-1" className="clusters-title">
           {t('page.clusters.title')}
         </Text>
-        <Button
-          view="action"
-          size="l"
+        <button
+          className="btn-reset btn-primary"
           onClick={handleRecalculate}
-          loading={recalculating}
+          disabled={recalculating}
         >
-          {t('clusters.recalculate')}
-        </Button>
+          {recalculating ? t('common.loading') : t('clusters.recalculate')}
+        </button>
       </div>
 
       <Card className="clusters-info">

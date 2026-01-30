@@ -17,3 +17,11 @@
 .language-button {
   min-width: 60px;
 }
+
+/* Custom padding for header buttons (no size classes) */
+.header-actions .g-button {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+}
