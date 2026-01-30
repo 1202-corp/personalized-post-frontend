@@ -101,17 +101,24 @@ export const translations: Record<Lang, Record<string, string>> = {
     'ab_testing.treatment': 'Treatment',
     'ab_testing.no_trained_users': 'Нет обученных пользователей для сравнения',
 
-    // clusters (taste clusters - users by preference vector)
+    // clusters (taste clusters - per channel, users by preference vector)
     'clusters.recalculate': 'Пересчитать кластеры вкуса',
     'clusters.num_clusters': 'Кластеров',
+    'clusters.channels_with_clusters': 'Каналов с кластерами',
     'clusters.total_users': 'Всего пользователей',
     'clusters.users_in_clusters': 'В кластерах вкуса',
     'clusters.users_without_cluster': 'Без кластера',
     'clusters.avg_users_per_cluster': 'Среднее в кластере',
     'clusters.max_users_in_cluster': 'Макс. в кластере',
-    'clusters.distribution_title': 'Пользователей по кластерам',
+    'clusters.distribution_title': 'Все кластеры (по каналам)',
     'clusters.cluster_id': 'ID кластера',
+    'clusters.channel': 'Канал',
+    'clusters.channel_legacy': 'Legacy (глобальный)',
     'clusters.user_count': 'Пользователей',
+    'clusters.info_per_channel': 'Кластеры вкуса считаются отдельно по каждому каналу: у каждого канала своя база кластеров. Пользователь может входить в разные кластеры в разных каналах. Рассылка постов идёт только тем, чей вкус по этому каналу совпадает с постом.',
+    'clusters.by_channel_title': 'Сводка по каналам',
+    'clusters.clusters_short': 'кластеров',
+    'clusters.users_short': 'пользователей',
 
     // login
     'login.title': 'PPP Admin Dashboard',
@@ -222,17 +229,24 @@ export const translations: Record<Lang, Record<string, string>> = {
     'ab_testing.treatment': 'Treatment',
     'ab_testing.no_trained_users': 'No trained users for comparison',
 
-    // clusters (taste clusters - users by preference vector)
+    // clusters (taste clusters - per channel)
     'clusters.recalculate': 'Recalculate taste clusters',
     'clusters.num_clusters': 'Clusters',
+    'clusters.channels_with_clusters': 'Channels with clusters',
     'clusters.total_users': 'Total users',
     'clusters.users_in_clusters': 'In taste clusters',
     'clusters.users_without_cluster': 'Without cluster',
     'clusters.avg_users_per_cluster': 'Avg per cluster',
     'clusters.max_users_in_cluster': 'Max in cluster',
-    'clusters.distribution_title': 'Users per cluster',
+    'clusters.distribution_title': 'All clusters (by channel)',
     'clusters.cluster_id': 'Cluster ID',
+    'clusters.channel': 'Channel',
+    'clusters.channel_legacy': 'Legacy (global)',
     'clusters.user_count': 'Users',
+    'clusters.info_per_channel': 'Taste clusters are computed per channel: each channel has its own set of clusters. A user can belong to different clusters in different channels. Posts are delivered only to users whose taste for that channel matches the post.',
+    'clusters.by_channel_title': 'Summary by channel',
+    'clusters.clusters_short': 'clusters',
+    'clusters.users_short': 'users',
 
     // login
     'login.title': 'PPP Admin Dashboard',

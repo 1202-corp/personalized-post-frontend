@@ -118,7 +118,7 @@ export interface ABTestResults {
   variants: Record<string, ABTestVariant>
 }
 
-/** Taste clusters: users grouped by preference vector for post-centric delivery */
+/** Taste clusters: users grouped by preference vector, per channel (post-centric delivery) */
 export interface TasteClusterStats {
   num_clusters: number
   total_users: number
@@ -126,7 +126,13 @@ export interface TasteClusterStats {
   users_without_taste_cluster: number
   avg_users_per_cluster: number
   max_users_in_cluster: number
-  cluster_distribution: Array<{ cluster_id: number; user_count: number }>
+  cluster_distribution: Array<{
+    cluster_id: number
+    channel_id: number | null
+    user_count: number
+    channel_title?: string | null
+    channel_username?: string | null
+  }>
 }
 
 export interface PaginatedResponse<T> {

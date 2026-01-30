@@ -21,9 +21,14 @@
   min-height: 400px;
 }
 
+.clusters-info {
+  padding: 16px 20px;
+  background: var(--g-color-base-generic-accent-disabled);
+}
+
 .clusters-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 16px;
 }
 
@@ -32,6 +37,35 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.clusters-by-channel {
+  padding: 24px;
+}
+
+.clusters-by-channel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.cluster-channel-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cluster-channel-card-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cluster-channel-card-stats .g-root {
+  margin-right: 4px;
 }
 
 .clusters-distribution {

@@ -19,11 +19,11 @@ const CONFIG = {
     // Number of posts per channel to fetch for training pool
     TRAINING_POSTS_PER_CHANNEL: window.TRAINING_POSTS_PER_CHANNEL || 50,
     // Initial posts per channel for training queue
-    TRAINING_INITIAL_POSTS_PER_CHANNEL: window.TRAINING_INITIAL_POSTS_PER_CHANNEL || 7,
+    TRAINING_INITIAL_POSTS_PER_CHANNEL: window.TRAINING_INITIAL_POSTS_PER_CHANNEL || 8,
     // Max extra posts from dislikes
     TRAINING_MAX_EXTRA_FROM_DISLIKE: window.TRAINING_MAX_EXTRA_FROM_DISLIKE || 5,
     // Max extra posts from skips  
-    TRAINING_MAX_EXTRA_FROM_SKIP: window.TRAINING_MAX_EXTRA_FROM_SKIP || 10,
+    TRAINING_MAX_EXTRA_FROM_SKIP: window.TRAINING_MAX_EXTRA_FROM_SKIP || 7,
     
     // Swipe gesture settings
     SWIPE_THRESHOLD: 100,
