@@ -23,14 +23,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.users': 'Пользователи',
     'nav.channels': 'Каналы',
     'nav.ab_testing': 'A/B Тестирование',
-    'nav.clusters': 'Кластеры вкуса',
+    'nav.clusters': 'Кластеры',
 
     // pages
     'page.dashboard.title': 'Панель управления',
     'page.users.title': 'Пользователи',
     'page.channels.title': 'Каналы',
     'page.ab_testing.title': 'A/B Тестирование',
-    'page.clusters.title': 'Кластеры вкуса',
+    'page.clusters.title': 'Кластеры',
 
     // dashboard
     'dashboard.users': 'Пользователей',
@@ -102,10 +102,10 @@ export const translations: Record<Lang, Record<string, string>> = {
     'ab_testing.no_trained_users': 'Нет обученных пользователей для сравнения',
 
     // clusters (taste clusters - users by preference vector)
-    'clusters.recalculate': 'Пересчитать кластеры вкуса',
+    'clusters.recalculate': 'Пересчитать кластеры',
     'clusters.num_clusters': 'Кластеров',
     'clusters.total_users': 'Всего пользователей',
-    'clusters.users_in_clusters': 'В кластерах вкуса',
+    'clusters.users_in_clusters': 'В кластерах',
     'clusters.users_without_cluster': 'Без кластера',
     'clusters.avg_users_per_cluster': 'Среднее в кластере',
     'clusters.max_users_in_cluster': 'Макс. в кластере',
@@ -144,14 +144,14 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.users': 'Users',
     'nav.channels': 'Channels',
     'nav.ab_testing': 'A/B Testing',
-    'nav.clusters': 'Taste Clusters',
+    'nav.clusters': 'Clusters',
 
     // pages
     'page.dashboard.title': 'Dashboard',
     'page.users.title': 'Users',
     'page.channels.title': 'Channels',
     'page.ab_testing.title': 'A/B Testing',
-    'page.clusters.title': 'Taste Clusters',
+    'page.clusters.title': 'Clusters',
 
     // dashboard
     'dashboard.users': 'Users',
@@ -223,10 +223,10 @@ export const translations: Record<Lang, Record<string, string>> = {
     'ab_testing.no_trained_users': 'No trained users for comparison',
 
     // clusters (taste clusters - users by preference vector)
-    'clusters.recalculate': 'Recalculate taste clusters',
+    'clusters.recalculate': 'Recalculate clusters',
     'clusters.num_clusters': 'Clusters',
     'clusters.total_users': 'Total users',
-    'clusters.users_in_clusters': 'In taste clusters',
+    'clusters.users_in_clusters': 'In clusters',
     'clusters.users_without_cluster': 'Without cluster',
     'clusters.avg_users_per_cluster': 'Avg per cluster',
     'clusters.max_users_in_cluster': 'Max in cluster',

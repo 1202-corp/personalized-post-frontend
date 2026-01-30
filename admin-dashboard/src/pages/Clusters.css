@@ -1,7 +1,7 @@
 .clusters {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .clusters-header {
@@ -12,6 +12,7 @@
 
 .clusters-title {
   margin-bottom: 0;
+  font-size: 1.875rem;
 }
 
 .clusters-loading {
@@ -28,16 +29,33 @@
 }
 
 .cluster-stat-card {
-  padding: 20px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+}
+
+.cluster-stat-card .g-text_variant_header-2 {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
 }
 
 .clusters-distribution {
-  padding: 24px;
+  padding: 28px;
+  background: var(--g-color-base-background);
+  border-radius: 12px;
+  border: 1px solid var(--g-color-line-generic);
 }
 
 .distribution-title {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  font-size: 1.375rem;
+}
+
+.clusters-distribution .g-table {
+  width: 100%;
+}
+
+.clusters-distribution .g-table__table {
+  width: 100%;
 }

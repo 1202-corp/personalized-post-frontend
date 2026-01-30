@@ -11,8 +11,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 #root {
@@ -21,14 +21,30 @@ body {
 
 /* Global typography improvements */
 h1, .g-text_variant_header-1 {
-  font-size: 1.75rem !important;
+  font-size: 1.875rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.02em;
+  margin-bottom: 8px;
 }
 
 h2, .g-text_variant_header-2 {
   font-size: 1.5rem !important;
   font-weight: 600 !important;
+  margin-bottom: 8px;
+}
+
+.g-text_variant_subheader-1 {
+  font-size: 1.125rem !important;
+  font-weight: 500 !important;
+}
+
+.g-text_variant_body-1 {
+  font-size: 0.9375rem !important;
+  line-height: 1.5 !important;
+}
+
+.g-text_variant_caption-1 {
+  font-size: 0.8125rem !important;
 }
 
 /* Table improvements */
@@ -41,15 +57,16 @@ h2, .g-text_variant_header-2 {
 }
 
 .g-table__cell {
-  padding: 12px 16px !important;
+  padding: 14px 16px !important;
   vertical-align: middle !important;
+  font-size: 0.9375rem !important;
 }
 
 .g-table__head-cell {
   padding: 14px 16px !important;
   font-weight: 600 !important;
   text-transform: uppercase;
-  font-size: 0.75rem !important;
+  font-size: 0.8125rem !important;
   letter-spacing: 0.05em;
   color: var(--g-color-text-secondary) !important;
 }
@@ -68,18 +85,42 @@ h2, .g-text_variant_header-2 {
 /* Label improvements */
 .g-label {
   font-weight: 500 !important;
-  padding: 4px 10px !important;
+  padding: 5px 12px !important;
   border-radius: 6px !important;
+  font-size: 0.8125rem !important;
 }
 
-/* Button improvements */
-.g-button {
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-  transition: all 0.15s ease !important;
-}
 
 /* Pagination improvements */
 .g-pagination {
   gap: 8px !important;
+  font-size: 0.9375rem !important;
 }
+
+/* Select/Input improvements */
+.g-select-control,
+.g-text-input__control {
+  font-size: 0.9375rem !important;
+}
+
+.g-select-control__label,
+.g-text-input__label {
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+/* Link improvements */
+.g-link {
+  font-size: inherit !important;
+}
+
+/* Table width - ensure tables take full width */
+.g-table {
+  width: 100% !important;
+}
+
+.g-table__table {
+  width: 100% !important;
+  table-layout: auto;
+}
+

@@ -1,13 +1,11 @@
 .sidebar {
-  position: fixed;
-  /* Position relative to centered content area - sidebar is "attached" to the left edge of centered 58% content */
-  /* Content starts at 21% from left, sidebar positioned to the left of content with spacing */
-  left: calc(21% - 240px - 6px); /* left edge of content minus sidebar width minus spacing (reduced to 6px) */
-  top: 100px;
-  width: 240px;
-  height: calc(100vh - 124px);
-  max-height: calc(100vh - 124px);
-  background: transparent;
+  width: 220px;
+  min-width: 220px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background: var(--g-color-base-background);
+  border-right: 1px solid var(--g-color-line-generic);
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -17,12 +15,10 @@
 .sidebar-nav {
   flex: 1;
   padding: 16px;
+  padding-top: 80px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: max-content; /* makes all buttons equal to the widest one */
-  align-items: flex-end; /* buttons align to right edge, expand to the left */
-  margin-left: auto; /* push container to right edge, so it expands to the left */
 }
 
 .sidebar-item {
@@ -53,18 +49,11 @@
   color: var(--g-color-text-brand-contrast);
 }
 
-@media (max-width: 1200px) {
-  .sidebar {
-    /* For 75% width content, left margin is 12.5% */
-    left: calc(12.5% - 240px - 6px);
-  }
-}
-
 @media (max-width: 768px) {
   .sidebar {
-    left: 16px;
-    right: 16px;
-    width: auto;
+    position: fixed;
+    left: 0;
+    top: 0;
     transform: translateX(-100%);
     transition: transform 0.3s;
   }
