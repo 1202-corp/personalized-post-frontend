@@ -1,11 +1,12 @@
 .channels {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .channels-title {
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+  font-size: 1.875rem;
 }
 
 .channels-loading {
@@ -19,8 +20,13 @@
   width: 100%;
 }
 
+.channels-table .g-table,
+.channels-table .g-table__table {
+  width: 100%;
+}
+
 .channels-pagination {
   display: flex;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: 24px;
 }

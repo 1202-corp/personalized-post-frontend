@@ -28,7 +28,8 @@ body {
     color: var(--tg-theme-text-color);
     min-height: 100vh;
     min-height: 100dvh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
     -webkit-user-select: none;
     user-select: none;
     /* iOS safe areas */
@@ -46,7 +47,14 @@ body {
     max-width: 500px;
     margin: 0 auto;
     padding: 8px 12px;
-    overflow: hidden;
+    overflow: visible;
+}
+
+/* On mobile, keep overflow hidden to prevent issues */
+@media (max-width: 600px) {
+    #app {
+        overflow: hidden;
+    }
 }
 
 /* Header */
@@ -90,8 +98,15 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     padding: 16px 0;
+}
+
+/* On mobile, clip to prevent horizontal scroll during swipe */
+@media (max-width: 600px) {
+    .card-container {
+        overflow: hidden;
+    }
 }
 
 /* Card */
