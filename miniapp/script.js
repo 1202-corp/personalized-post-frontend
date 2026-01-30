@@ -143,26 +143,20 @@ function applyTheme() {
 }
 
 async function loadPosts() {
+    let emptyMessage = null;
     try {
-        // If we don't know the user (e.g. running outside Telegram), use mock data only
         if (!userId) {
             posts = getMockPosts();
         } else {
-            // Check if specific channel is provided (bonus channel training)
             const params = new URLSearchParams(window.location.search);
             const specificChannel = params.get('channel');
-            const channelsParam = params.get('channels'); // comma-separated list
-            
+            const channelsParam = params.get('channels');
             let channelUsernames;
-            
             if (specificChannel) {
-                // Single bonus channel
                 channelUsernames = [`@${specificChannel}`];
             } else if (channelsParam) {
-                // Specific channels passed (for retraining)
                 channelUsernames = channelsParam.split(',').map(ch => ch.trim().startsWith('@') ? ch.trim() : `@${ch.trim()}`);
             } else {
-                // Fetch user's channels from API
                 try {
                     const channelsResponse = await fetch(`${config.API_BASE_URL}/channels/user/${userId}`);
                     if (channelsResponse.ok) {
@@ -172,74 +166,87 @@ async function loadPosts() {
                 } catch (e) {
                     console.warn('Failed to fetch user channels:', e);
                 }
-                
-                // Fallback to defaults if no channels found
                 if (!channelUsernames || channelUsernames.length === 0) {
                     channelUsernames = ['@durov', '@telegram'];
                 }
             }
-            
-            // Fetch posts from API (use config for pool size)
             const response = await fetch(`${config.API_BASE_URL}/posts/training`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     user_telegram_id: userId,
                     channel_usernames: channelUsernames,
                     posts_per_channel: config.TRAINING_POSTS_PER_CHANNEL,
                 }),
             });
-            
             if (response.ok) {
-                posts = await response.json();
+                const rawPosts = await response.json();
+                // API returns N1 then N2 (no interleaving); use as-is, progress is overall
+                posts = rawPosts;
             } else {
-                console.error(`API returned ${response.status}`);
+                if (response.status === 403) {
+                    const err = await response.json().catch(() => ({}));
+                    emptyMessage = typeof err.detail === 'string' ? err.detail : (window.i18n?.t('training_only_when_started') || 'Start training from the bot first.');
+                } else {
+                    console.error(`API returned ${response.status}`);
+                }
                 posts = [];
             }
+        }
+        isLoading = false;
+        loading.style.display = 'none';
+        if (posts.length === 0) {
+            showEmptyState(emptyMessage);
+        } else {
+            const numChannels = new Set(posts.map(p => (p.channel_username || p.channel_title || '').toString().trim().toLowerCase())).size;
+            const totalToShow = Math.min(INITIAL_POSTS_PER_CHANNEL * numChannels, posts.length);
+            queue = Array.from({ length: totalToShow }, (_, i) => i);
+            currentQueueIndex = 0;
+            shownIndices.clear();
+            extraFromDislike = 0;
+            renderCurrentCard();
+            updateProgress();
+            setTimeout(() => prefetchAllImages(), 100);
         }
     } catch (error) {
         console.error('Error loading posts:', error);
         posts = [];
-    }
-    
-    isLoading = false;
-    loading.style.display = 'none';
-    
-    if (posts.length === 0) {
+        isLoading = false;
+        loading.style.display = 'none';
         showEmptyState();
-    } else {
-        // Initialize queue with first N posts (interleaved by channel)
-        // Group posts by channel
-        const postsByChannel = {};
-        posts.forEach((post, idx) => {
-            const ch = post.channel_username || post.channel_title || 'unknown';
-            if (!postsByChannel[ch]) postsByChannel[ch] = [];
-            postsByChannel[ch].push(idx);
-        });
-        
-        // Interleave: take INITIAL_POSTS_PER_CHANNEL from each channel
-        const channelLists = Object.values(postsByChannel);
-        queue = [];
-        for (let i = 0; i < INITIAL_POSTS_PER_CHANNEL; i++) {
-            for (const list of channelLists) {
-                if (i < list.length) {
-                    queue.push(list[i]);
-                }
+    }
+}
+
+/** Normalize channel name for grouping (same as bot). */
+function normChannel(name) {
+    if (name == null) return 'unknown';
+    return String(name).trim().replace(/^@/, '').toLowerCase();
+}
+
+/** (Unused) Previously interleaved posts; API now returns N1 then N2, use as-is. */
+function interleavePostsByChannel(rawPosts) {
+    const byChannel = {};
+    for (const post of rawPosts) {
+        const ch = normChannel(post.channel_username || post.channel_title);
+        if (!byChannel[ch]) byChannel[ch] = [];
+        byChannel[ch].push(post);
+    }
+    const sortedNames = Object.keys(byChannel).sort();
+    const channelLists = sortedNames.map(name => byChannel[name]);
+    const interleaved = [];
+    let col = 0;
+    let hasMore = true;
+    while (hasMore) {
+        hasMore = false;
+        for (const list of channelLists) {
+            if (col < list.length) {
+                interleaved.push(list[col]);
+                hasMore = true;
             }
         }
-        
-        // Reset state
-        currentQueueIndex = 0;
-        shownIndices.clear();
-        extraFromDislike = 0;
-        
-        renderCurrentCard();
-        updateProgress();
-        // Prefetch in background after small delay to not block first render
-        setTimeout(() => prefetchAllImages(), 100);
+        col++;
     }
+    return interleaved;
 }
 
 function getMockPosts() {
