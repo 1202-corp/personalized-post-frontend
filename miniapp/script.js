@@ -25,8 +25,10 @@ let shownIndices = new Set();  // Track already shown posts to prevent duplicate
 let currentQueueIndex = 0;
 let ratedCount = 0;
 let extraFromDislike = 0;
+let extraFromSkip = 0;
 // Use config values for training settings
 const MAX_EXTRA_FROM_DISLIKE = config.TRAINING_MAX_EXTRA_FROM_DISLIKE;
+const MAX_EXTRA_FROM_SKIP = config.TRAINING_MAX_EXTRA_FROM_SKIP;
 const INITIAL_POSTS_PER_CHANNEL = config.TRAINING_INITIAL_POSTS_PER_CHANNEL;
 let userId = null;
 let userLanguage = 'en';
@@ -198,12 +200,15 @@ async function loadPosts() {
         if (posts.length === 0) {
             showEmptyState(emptyMessage);
         } else {
-            const numChannels = new Set(posts.map(p => (p.channel_username || p.channel_title || '').toString().trim().toLowerCase())).size;
-            const totalToShow = Math.min(INITIAL_POSTS_PER_CHANNEL * numChannels, posts.length);
-            queue = Array.from({ length: totalToShow }, (_, i) => i);
+            // Load content for posts without text (fetch from user-bot via API)
+            await loadMissingPostContent();
+            
+            // Build initial queue: take INITIAL_POSTS_PER_CHANNEL from each channel
+            queue = buildInitialQueue(posts, INITIAL_POSTS_PER_CHANNEL);
             currentQueueIndex = 0;
             shownIndices.clear();
             extraFromDislike = 0;
+            extraFromSkip = 0;
             renderCurrentCard();
             updateProgress();
             setTimeout(() => prefetchAllImages(), 100);
@@ -217,10 +222,103 @@ async function loadPosts() {
     }
 }
 
+/**
+ * Load content for posts that don't have text (fetches from user-bot via API).
+ * Updates posts array in place. Marks failed posts with _contentFailed flag.
+ */
+async function loadMissingPostContent() {
+    const postsWithoutText = posts.filter(p => !p.text && p.id);
+    if (postsWithoutText.length === 0) return;
+    
+    console.log(`Loading content for ${postsWithoutText.length} posts without text...`);
+    
+    // Load content in parallel (with concurrency limit)
+    const concurrency = 5;
+    for (let i = 0; i < postsWithoutText.length; i += concurrency) {
+        const batch = postsWithoutText.slice(i, i + concurrency);
+        await Promise.all(batch.map(async (post) => {
+            try {
+                const response = await fetch(`${config.API_BASE_URL}/posts/${post.id}/content`);
+                if (response.ok) {
+                    const content = await response.json();
+                    // Update post in place
+                    if (content.text) {
+                        post.text = content.text;
+                    }
+                    if (content.media_type && !post.media_type) {
+                        post.media_type = content.media_type;
+                    }
+                } else {
+                    console.warn(`Failed to load content for post ${post.id}: ${response.status}`);
+                    post._contentFailed = true;
+                }
+            } catch (e) {
+                console.warn(`Error loading content for post ${post.id}:`, e);
+                post._contentFailed = true;
+            }
+        }));
+    }
+    
+    // Filter out posts that failed to load and still have no text
+    const validPosts = posts.filter(p => p.text || !p._contentFailed);
+    const failedCount = posts.length - validPosts.length;
+    if (failedCount > 0) {
+        console.log(`Filtered out ${failedCount} posts with failed content loading`);
+        posts = validPosts;
+    }
+    
+    console.log(`Content loading complete. Posts with text: ${posts.filter(p => p.text).length}/${posts.length}`);
+}
+
 /** Normalize channel name for grouping (same as bot). */
 function normChannel(name) {
     if (name == null) return 'unknown';
     return String(name).trim().replace(/^@/, '').toLowerCase();
+}
+
+/**
+ * Find next available post from the specified channel (not in queue, not shown).
+ * Returns index in posts array, or -1 if none available.
+ */
+function findNextAvailablePostFromChannel(channel) {
+    for (let i = 0; i < posts.length; i++) {
+        if (queue.includes(i) || shownIndices.has(i)) continue;
+        const postChannel = normChannel(posts[i]?.channel_username || posts[i]?.channel_title);
+        if (postChannel === channel) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+/**
+ * Build initial queue: take N posts from each channel sequentially.
+ * Posts come from API as: [ch1_post1, ch1_post2, ..., ch1_postN, ch2_post1, ch2_post2, ...]
+ * Result queue: indices for first N posts of ch1, then first N posts of ch2, etc.
+ */
+function buildInitialQueue(allPosts, postsPerChannel) {
+    // Group posts by channel, preserving order
+    const channelPosts = {};
+    const channelOrder = [];
+    
+    allPosts.forEach((post, index) => {
+        const channel = normChannel(post.channel_username || post.channel_title);
+        if (!channelPosts[channel]) {
+            channelPosts[channel] = [];
+            channelOrder.push(channel);
+        }
+        channelPosts[channel].push(index);
+    });
+    
+    // Take first N from each channel
+    const result = [];
+    for (const channel of channelOrder) {
+        const indices = channelPosts[channel].slice(0, postsPerChannel);
+        result.push(...indices);
+    }
+    
+    console.log(`Built initial queue: ${result.length} posts from ${channelOrder.length} channels (${postsPerChannel} per channel)`);
+    return result;
 }
 
 /** (Unused) Previously interleaved posts; API now returns N1 then N2, use as-is. */
@@ -536,6 +634,11 @@ function endDrag() {
 async function handleAction(action, card) {
     const postId = parseInt(card.dataset.postId);
     
+    // Get current post's channel for extra post selection
+    const currentPostIndex = queue[currentQueueIndex];
+    const currentPost = posts[currentPostIndex];
+    const currentChannel = normChannel(currentPost?.channel_username || currentPost?.channel_title);
+    
     // Animate card off screen
     if (action === 'like') {
         card.classList.add('swiping-right');
@@ -544,19 +647,25 @@ async function handleAction(action, card) {
         card.classList.add('swiping-left');
         tg.HapticFeedback.impactOccurred('light');
         
-        // Add extra post from reserve on dislike (up to MAX_EXTRA_FROM_DISLIKE)
+        // Add extra post from SAME channel on dislike (up to MAX_EXTRA_FROM_DISLIKE total)
         if (extraFromDislike < MAX_EXTRA_FROM_DISLIKE) {
-            // Find available indices (not in queue and not shown)
-            const availableIndices = [];
-            for (let i = 0; i < posts.length; i++) {
-                if (!queue.includes(i) && !shownIndices.has(i)) {
-                    availableIndices.push(i);
-                }
-            }
-            if (availableIndices.length > 0) {
-                const randomIdx = availableIndices[Math.floor(Math.random() * availableIndices.length)];
-                queue.push(randomIdx);
+            const extraIdx = findNextAvailablePostFromChannel(currentChannel);
+            if (extraIdx !== -1) {
+                queue.push(extraIdx);
                 extraFromDislike++;
+                console.log(`Dislike: added extra post ${extraIdx} from channel ${currentChannel}. Total extras: ${extraFromDislike}/${MAX_EXTRA_FROM_DISLIKE}`);
+            }
+        }
+    } else if (action === 'skip') {
+        card.classList.add('swiping-up');
+        
+        // Add extra post from SAME channel on skip (up to MAX_EXTRA_FROM_SKIP total)
+        if (extraFromSkip < MAX_EXTRA_FROM_SKIP) {
+            const extraIdx = findNextAvailablePostFromChannel(currentChannel);
+            if (extraIdx !== -1) {
+                queue.push(extraIdx);
+                extraFromSkip++;
+                console.log(`Skip: added extra post ${extraIdx} from channel ${currentChannel}. Total extras: ${extraFromSkip}/${MAX_EXTRA_FROM_SKIP}`);
             }
         }
     } else {
