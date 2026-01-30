@@ -102,29 +102,38 @@ h2, .g-text_variant_header-2 {
 .g-text-input__control {
   font-size: 0.9375rem !important;
 }
-/* Button padding reset - force 0 top/bottom padding */
-.g-button.g-button_size_l,
-button.g-button_size_l {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
+/* AGGRESSIVE button padding reset - maximum specificity */
+html body .g-button.g-button_size_l,
+html body button.g-button_size_l,
+html .g-button.g-button_size_l.g-button_size_l,
+body .g-button.g-button_size_l {
+  padding: 0 20px !important;
 }
 
-.g-button.g-button_size_m,
-button.g-button_size_m {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
+html body .g-button.g-button_size_m,
+html body button.g-button_size_m,
+html .g-button.g-button_size_m.g-button_size_m,
+body .g-button.g-button_size_m {
+  padding: 0 16px !important;
 }
 
-.g-button.g-button_size_s,
-button.g-button_size_s {
+html body .g-button.g-button_size_s,
+html body button.g-button_size_s,
+html .g-button.g-button_size_s.g-button_size_s,
+body .g-button.g-button_size_s {
+  padding: 0 12px !important;
+}
+
+/* Nuclear option - override ALL button padding */
+[class*="g-button_size_"] {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
-  padding-left: 12px !important;
-  padding-right: 12px !important;
+}
+
+/* Target specific gravity UI button internals */
+.g-button__text {
+  line-height: normal !important;
+  vertical-align: middle !important;
 }
 .g-select-control__label,
 .g-text-input__label {
