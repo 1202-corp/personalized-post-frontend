@@ -5,7 +5,6 @@ import {
   ChartLine, 
   LayoutList, 
   Video, 
-  Flask,
   FolderTree
 } from '@gravity-ui/icons'
 import { useLanguage } from '../../context/LanguageContext'
@@ -25,7 +24,6 @@ const menuItems: MenuItem[] = [
   { path: '/dashboard', label: 'nav.dashboard', iconData: ChartLine },
   { path: '/users', label: 'nav.users', iconData: LayoutList },
   { path: '/channels', label: 'nav.channels', iconData: Video },
-  { path: '/ab-testing', label: 'nav.ab_testing', iconData: Flask },
   { path: '/clusters', label: 'nav.clusters', iconData: FolderTree },
 ]
 

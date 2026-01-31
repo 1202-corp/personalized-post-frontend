@@ -4,7 +4,6 @@ import Login from '../pages/Login'
 import Dashboard from '../pages/Dashboard'
 import Users from '../pages/Users'
 import Channels from '../pages/Channels'
-import ABTesting from '../pages/ABTesting'
 import Clusters from '../pages/Clusters'
 import Layout from '../components/Layout/Layout'
 
@@ -68,14 +67,6 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Channels />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/ab-testing"
-        element={
-          <ProtectedRoute>
-            <ABTesting />
           </ProtectedRoute>
         }
       />

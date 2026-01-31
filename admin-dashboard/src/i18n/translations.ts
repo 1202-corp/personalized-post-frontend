@@ -22,14 +22,12 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.dashboard': 'Панель',
     'nav.users': 'Пользователи',
     'nav.channels': 'Каналы',
-    'nav.ab_testing': 'A/B Тестирование',
     'nav.clusters': 'Кластеры',
 
     // pages
     'page.dashboard.title': 'Панель управления',
     'page.users.title': 'Пользователи',
     'page.channels.title': 'Каналы',
-    'page.ab_testing.title': 'A/B Тестирование',
     'page.clusters.title': 'Кластеры',
 
     // dashboard
@@ -49,11 +47,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'dashboard.score_difference_desc': 'Разница (чем больше - лучше)',
     'dashboard.ml_coverage': 'Покрытие ML',
     'dashboard.ml_coverage_desc': '% постов с скорингом',
-    'dashboard.ab_testing_title': 'A/B Тестирование алгоритмов',
-    'dashboard.ab_testing_desc': 'Сравнение эффективности разных алгоритмов рекомендаций. Пользователи автоматически распределяются по вариантам.',
-    'dashboard.ab_users': 'Пользователи:',
-    'dashboard.ab_trained': 'Обучено:',
-    'dashboard.ab_post_training': 'Post-training:',
 
     // users
     'users.telegram_id': 'Telegram ID',
@@ -91,16 +84,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'channels.posts_ttl_expired': 'Истек',
     'channels.posts_ttl_no_posts': 'Нет постов',
 
-    // ab testing
-    'ab_testing.info': 'Сравнение эффективности разных алгоритмов рекомендаций. Пользователи автоматически распределяются по вариантам (50/50 по хешу user_id). control = cosine similarity, treatment_a = hybrid (cosine + recency). Процент лайков показывает какой алгоритм лучше предсказывает предпочтения.',
-    'ab_testing.users': 'Пользователи:',
-    'ab_testing.trained': 'Обучено:',
-    'ab_testing.post_training': 'Post-training:',
-    'ab_testing.like_rate': 'Процент лайков:',
-    'ab_testing.control': 'Control',
-    'ab_testing.treatment': 'Treatment',
-    'ab_testing.no_trained_users': 'Нет обученных пользователей для сравнения',
-
     // clusters (taste clusters - per channel, users by preference vector)
     'clusters.recalculate': 'Пересчитать кластеры вкуса',
     'clusters.num_clusters': 'Кластеров',
@@ -113,7 +96,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'clusters.distribution_title': 'Все кластеры (по каналам)',
     'clusters.cluster_id': 'ID кластера',
     'clusters.channel': 'Канал',
-    'clusters.channel_legacy': 'Legacy (глобальный)',
     'clusters.user_count': 'Пользователей',
     'clusters.info_per_channel': 'Кластеры вкуса считаются отдельно по каждому каналу: у каждого канала своя база кластеров. Пользователь может входить в разные кластеры в разных каналах. Рассылка постов идёт только тем, чей вкус по этому каналу совпадает с постом.',
     'clusters.by_channel_title': 'Сводка по каналам',
@@ -150,14 +132,12 @@ export const translations: Record<Lang, Record<string, string>> = {
     'nav.dashboard': 'Dashboard',
     'nav.users': 'Users',
     'nav.channels': 'Channels',
-    'nav.ab_testing': 'A/B Testing',
     'nav.clusters': 'Clusters',
 
     // pages
     'page.dashboard.title': 'Dashboard',
     'page.users.title': 'Users',
     'page.channels.title': 'Channels',
-    'page.ab_testing.title': 'A/B Testing',
     'page.clusters.title': 'Clusters',
 
     // dashboard
@@ -177,11 +157,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'dashboard.score_difference_desc': 'Difference (higher is better)',
     'dashboard.ml_coverage': 'ML Coverage',
     'dashboard.ml_coverage_desc': '% posts with scoring',
-    'dashboard.ab_testing_title': 'A/B Testing Algorithms',
-    'dashboard.ab_testing_desc': 'Comparison of effectiveness of different recommendation algorithms. Users are automatically distributed across variants.',
-    'dashboard.ab_users': 'Users:',
-    'dashboard.ab_trained': 'Trained:',
-    'dashboard.ab_post_training': 'Post-training:',
 
     // users
     'users.telegram_id': 'Telegram ID',
@@ -219,16 +194,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'channels.posts_ttl_expired': 'Expired',
     'channels.posts_ttl_no_posts': 'No posts',
 
-    // ab testing
-    'ab_testing.info': 'Comparison of effectiveness of different recommendation algorithms. Users are automatically distributed across variants (50/50 by user_id hash). control = cosine similarity, treatment_a = hybrid (cosine + recency). Like rate shows which algorithm better predicts preferences.',
-    'ab_testing.users': 'Users:',
-    'ab_testing.trained': 'Trained:',
-    'ab_testing.post_training': 'Post-training:',
-    'ab_testing.like_rate': 'Like rate:',
-    'ab_testing.control': 'Control',
-    'ab_testing.treatment': 'Treatment',
-    'ab_testing.no_trained_users': 'No trained users for comparison',
-
     // clusters (taste clusters - per channel)
     'clusters.recalculate': 'Recalculate taste clusters',
     'clusters.num_clusters': 'Clusters',
@@ -241,7 +206,6 @@ export const translations: Record<Lang, Record<string, string>> = {
     'clusters.distribution_title': 'All clusters (by channel)',
     'clusters.cluster_id': 'Cluster ID',
     'clusters.channel': 'Channel',
-    'clusters.channel_legacy': 'Legacy (global)',
     'clusters.user_count': 'Users',
     'clusters.info_per_channel': 'Taste clusters are computed per channel: each channel has its own set of clusters. A user can belong to different clusters in different channels. Posts are delivered only to users whose taste for that channel matches the post.',
     'clusters.by_channel_title': 'Summary by channel',

@@ -16,7 +16,7 @@ const config = window.APP_CONFIG || {
 
 // Training settings (loaded from API /config/training)
 let TRAINING_POSTS_PER_CHANNEL = 50;      // default, will be overwritten
-let INITIAL_POSTS_PER_CHANNEL = 8;        // default, will be overwritten
+let INITIAL_POSTS_PER_CHANNEL = 17;       // default, will be overwritten from API config
 let MAX_EXTRA_FROM_DISLIKE = 5;           // default, will be overwritten
 let MAX_EXTRA_FROM_SKIP = 7;              // default, will be overwritten
 

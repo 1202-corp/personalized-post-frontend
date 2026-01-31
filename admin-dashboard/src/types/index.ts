@@ -105,19 +105,6 @@ export interface DashboardData {
   recommendations: RecommendationStat
 }
 
-export interface ABTestVariant {
-  algorithm: string
-  users: number
-  trained: number
-  post_training_interactions: number
-  like_rate: number | null
-  note?: string
-}
-
-export interface ABTestResults {
-  variants: Record<string, ABTestVariant>
-}
-
 /** Taste clusters: users grouped by preference vector, per channel (post-centric delivery) */
 export interface TasteClusterStats {
   num_clusters: number
